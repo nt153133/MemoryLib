@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ArrayOfSignature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Signature>
+    <Key>PlayerInfo</Key>
+    <Value>83f9ff7412448b048e8bd3488d0d</Value>
+    <Offset>14</Offset>
+  </Signature>
+  <Signature>
+    <Key>ObjectList</Key>
+    <Value>488b420848c1e8033da701000077248bc0488d0d</Value>
+    <Offset>20</Offset>
+  </Signature>
+  <Signature>
+    <Key>Inventory</Key>
+    <Value>8d81********85c075584c8b05</Value>
+    <Offset>13</Offset>
+  </Signature>
+</ArrayOfSignature>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Offsets xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <PlayerInfo>
+    <Name>1</Name>
+    <ObjectId>84</ObjectId>
+    <ClassJob>102</ClassJob>
+    <ClassLevel>104</ClassLevel>
+    <ClassLevelTable>106</ClassLevelTable>
+    <ClassExpTable>164</ClassExpTable>
+    <StatsTable>312</StatsTable>
+    <InspectedPlayer>1560</InspectedPlayer>
+  </PlayerInfo>
+  <Character>
+    <Name>48</Name>
+    <ObjectId>116</ObjectId>
+    <NpcId>128</NpcId>
+    <OwnerId>132</OwnerId>
+    <ObjectType>140</ObjectType>
+    <Distance>146</Distance>
+    <Location>160</Location>
+    <Heading>176</Heading>
+    <HitboxRadius>192</HitboxRadius>
+    <FcTag>6138</FcTag>
+    <Health>6308</Health>
+    <Mana>6316</Mana>
+    <GP>6326</GP>
+    <CP>6330</CP>
+    <Title>6334</Title>
+    <ClassJob>6364</ClassJob>
+    <ClassLevel>6366</ClassLevel>
+    <Icon>6368</Icon>
+    <World>6296</World>
+    <HomeWorld>6298</HomeWorld>
+    <Status>6408</Status>
+  </Character>
+</Offsets>

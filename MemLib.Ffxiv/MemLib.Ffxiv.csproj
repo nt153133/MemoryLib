@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FCEA67E9-3E2B-49D5-876D-37DAD6CE6FB3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MemLib.Ffxiv</RootNamespace>
+    <AssemblyName>MemLib.Ffxiv</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\ClassJobType.cs" />
+    <Compile Include="Enums\EquipmentSlot.cs" />
+    <Compile Include="Enums\EurekaElement.cs" />
+    <Compile Include="Enums\GameObjectType.cs" />
+    <Compile Include="Enums\GatheringType.cs" />
+    <Compile Include="Enums\GrandCompany.cs" />
+    <Compile Include="Enums\InventoryBagId.cs" />
+    <Compile Include="Enums\PlayerIcon.cs" />
+    <Compile Include="Enums\StatusFlags.cs" />
+    <Compile Include="Enums\World.cs" />
+    <Compile Include="FfxivProcess.cs" />
+    <Compile Include="Managers\GameObjectManager.cs" />
+    <Compile Include="Managers\InventoryManager.cs" />
+    <Compile Include="Objects\Aetheryte.cs" />
+    <Compile Include="Objects\BattleCharacter.cs" />
+    <Compile Include="Objects\Character.cs" />
+    <Compile Include="Objects\EventObject.cs" />
+    <Compile Include="Objects\GameObject.cs" />
+    <Compile Include="Objects\GatheringPointObject.cs" />
+    <Compile Include="Objects\HousingObject.cs" />
+    <Compile Include="Objects\LocalPlayer.cs" />
+    <Compile Include="Objects\Minion.cs" />
+    <Compile Include="Objects\RemoteObject.cs" />
+    <Compile Include="Objects\Stats.cs" />
+    <Compile Include="Objects\Treasure.cs" />
+    <Compile Include="Offsets\OffsetManager.cs" />
+    <Compile Include="Offsets\Signature.cs" />
+    <Compile Include="Offsets\Structs\CharacterOffsets.cs" />
+    <Compile Include="Offsets\Structs\PlayerInfoOffsets.cs" />
+    <Compile Include="Offsets\Offsets.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MemLib\MemLib.csproj">
+      <Project>{185e7c81-b6d3-4b4d-985f-0186d0869956}</Project>
+      <Name>MemLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="signatures.xml" />
+    <Content Include="offsets.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
