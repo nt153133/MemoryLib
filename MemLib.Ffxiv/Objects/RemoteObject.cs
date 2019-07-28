@@ -8,7 +8,7 @@ namespace MemLib.Ffxiv.Objects {
         public IntPtr vTable => m_Process.Read<IntPtr>(BaseAddress);
         public virtual bool IsValid => BaseAddress != IntPtr.Zero;
 
-        public RemoteObject(FfxivProcess process, IntPtr baseAddress) {
+        internal RemoteObject(FfxivProcess process, IntPtr baseAddress) {
             m_Process = process;
             BaseAddress = baseAddress;
         }

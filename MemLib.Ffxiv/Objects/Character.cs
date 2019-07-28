@@ -22,21 +22,27 @@ namespace MemLib.Ffxiv.Objects {
 
         public uint OwnerId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.OwnerId);
 
-        public virtual bool HasTarget => CurrentTargetId != 0 && CurrentTargetId != GameObjectManager.EmptyGameObject;
+        public bool HasTarget {
+            get {
+                var id = CurrentTargetId;
+                return id != 0 && id != GameObjectManager.EmptyGameObject;
+            }
+        }
+
         public StatusFlags StatusFlags => (StatusFlags)m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.Status);
         public bool InCombat => StatusFlags.HasFlag(StatusFlags.InCombat);
         public bool IsNpc => NpcId > 0u;
 
-        public uint CurrentTargetId { get; }
-        public Character TargetCharacter { get; }
-        public GameObject TargetGameObject { get; }
-        
+        public virtual uint CurrentTargetId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.TargetId);
+        public virtual Character TargetCharacter => m_Process.GameObjects.GetObjectByObjectId<Character>(CurrentTargetId);
+        public virtual GameObject TargetGameObject => m_Process.GameObjects.GetObjectByObjectId(CurrentTargetId);
+
         public override uint CurrentHealth => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.Health);
         public override uint MaxHealth => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.Health + 4);
         public override float CurrentHealthPercent => (float) CurrentHealth / MaxHealth * 100f;
 
         public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId);
 
-        public Character(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
+        internal Character(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }
 }

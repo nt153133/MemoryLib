@@ -15,7 +15,7 @@ namespace MemLib.Ffxiv.Objects {
 
         public override bool IsValid => base.IsValid && ObjectId != 0u;
 
-        public GameObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
+        internal GameObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
         
         #region Overrides of RemoteObject
 

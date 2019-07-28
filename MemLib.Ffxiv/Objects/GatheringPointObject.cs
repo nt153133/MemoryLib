@@ -6,6 +6,6 @@ namespace MemLib.Ffxiv.Objects {
         public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId);
         public new GatheringType Type => (GatheringType)(-1);
 
-        public GatheringPointObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
+        internal GatheringPointObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }
 }

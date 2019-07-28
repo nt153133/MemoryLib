@@ -14,7 +14,9 @@ namespace MemLib.Ffxiv.Offsets {
         private Dictionary<string, IntPtr> m_ResolvedSignatures;
         public IntPtr ObjectListPtr => m_ResolvedSignatures["ObjectList"];
         public IntPtr PlayerInfoPtr => m_ResolvedSignatures["PlayerInfo"];
+        public IntPtr TargetingPtr => m_ResolvedSignatures["Targeting"];
         public IntPtr InventoryPtr => m_ResolvedSignatures["Inventory"];
+        public IntPtr PetPtr => m_ResolvedSignatures["Pet"];
 
         private Offsets m_Offsets = new Offsets();
         public CharacterOffsets Character => m_Offsets.Character;
@@ -61,6 +63,8 @@ namespace MemLib.Ffxiv.Offsets {
                 new Signature{Key = "PlayerInfo", Value = "83f9ff7412448b048e8bd3488d0d", Offset = 14},
                 new Signature{Key = "ObjectList", Value = "488b420848c1e8033da701000077248bc0488d0d", Offset = 20},
                 new Signature{Key = "Inventory", Value = "8d81********85c075584c8b05", Offset = 13},
+                new Signature{Key = "Targeting", Value = "41bc000000e041bd01000000493bc47555488d0d", Offset = 20},
+                new Signature{Key = "Pet", Value = "3B15********74**8915", Offset = 2},
             };
         }
 

@@ -16,6 +16,6 @@ namespace MemLib.Ffxiv.Objects {
 
         public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId2);
 
-        public BattleCharacter(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
+        internal BattleCharacter(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }
 }

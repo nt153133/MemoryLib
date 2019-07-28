@@ -12,11 +12,24 @@ namespace MemLib.Ffxiv.Managers {
 
         public IEnumerable<GameObject> GameObjects => GetRawEntities();
         public LocalPlayer LocalPlayer => GetLocalPlayer();
+        public GameObject Target => GetTarget();
+        public BattleCharacter CurrentPet => GetPet();
         public HashSet<BattleCharacter> Attackers { get; }
-        public BattleCharacter CurrentPet { get; }
 
         internal GameObjectManager(FfxivProcess process) {
             m_Process = process;
+        }
+
+        private BattleCharacter GetPet() {
+            if (m_Process.Read<uint>(m_Process.Offsets.PetPtr, out var petId))
+                return GetObjectByObjectId<BattleCharacter>(petId);
+            return null;
+        }
+
+        private GameObject GetTarget() {
+            if(m_Process.Read<IntPtr>(m_Process.Offsets.TargetingPtr + 0x88, out var ptr))
+                return new GameObject(m_Process, ptr);
+            return null;
         }
 
         private IEnumerable<GameObject> GetRawEntities() {
@@ -73,7 +86,7 @@ namespace MemLib.Ffxiv.Managers {
         }
 
         public GameObject GetObjectByName(string name) {
-            return GameObjects.FirstOrDefault(o => o.Name.Equals(name, StringComparison.Ordinal));
+            return GameObjects.FirstOrDefault(o => o.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public GameObject GetObjectByObjectId(uint objectId) {

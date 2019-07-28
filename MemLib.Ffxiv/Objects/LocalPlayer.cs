@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using MemLib.Ffxiv.Enums;
 
 namespace MemLib.Ffxiv.Objects {
     public sealed class LocalPlayer : BattleCharacter {
-        public BattleCharacter Pet { get; }
-        public GrandCompany GrandCompany { get; }
-        public new bool InCombat { get; }
+        public BattleCharacter Pet => m_Process.GameObjects.CurrentPet;
         public new Character Mount => null;
 
         public Stats Stats => m_Process.Read<Stats>(m_Process.Offsets.PlayerInfoPtr + m_Process.Offsets.PlayerInfo.StatsTable);
@@ -34,14 +31,10 @@ namespace MemLib.Ffxiv.Objects {
             }
         }
 
-        public GameObject CurrentTarget { get; }
-        public uint CurrentTargetObjId => HasTarget ? CurrentTarget.ObjectId : 0u;
-
-        #region Overrides of RemoteObject
-
+        public override GameObject TargetGameObject => m_Process.GameObjects.Target;
+        public override Character TargetCharacter => m_Process.GameObjects.GetObjectByObjectId<Character>(CurrentTargetId);
+        public override uint CurrentTargetId => m_Process.Read<uint>(m_Process.Offsets.TargetingPtr + 0x160);
         public override bool IsValid => BaseAddress != IntPtr.Zero;
-
-        #endregion
 
         private static ClassJobType[] m_ClassJobTypes;
 

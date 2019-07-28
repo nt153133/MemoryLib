@@ -6,6 +6,7 @@ namespace MemLib.Ffxiv.Offsets.Structs {
         //public int NpcId1 { get; set; } = 0x78;
         public int NpcId { get; set; } = 0x80;
         public int NpcId2 { get; set; } = 0x187C;
+        public int TargetId { get; set; } = 0x1E8;
         public int OwnerId { get; set; } = 0x84;
         public int ObjectType { get; set; } = 0x8C;
         public int Distance { get; set; } = 0x92;

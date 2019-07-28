@@ -42,7 +42,6 @@
     <Compile Include="Enums\EurekaElement.cs" />
     <Compile Include="Enums\GameObjectType.cs" />
     <Compile Include="Enums\GatheringType.cs" />
-    <Compile Include="Enums\GrandCompany.cs" />
     <Compile Include="Enums\InventoryBagId.cs" />
     <Compile Include="Enums\PlayerIcon.cs" />
     <Compile Include="Enums\StatusFlags.cs" />
