@@ -3,8 +3,9 @@ namespace MemLib.Ffxiv.Offsets.Structs {
     public class CharacterOffsets {
         public int Name { get; set; } = 0x30;
         public int ObjectId { get; set; } = 0x74;
-        //public int NpcId { get; set; } = 0x78;
+        //public int NpcId1 { get; set; } = 0x78;
         public int NpcId { get; set; } = 0x80;
+        public int NpcId2 { get; set; } = 0x187C;
         public int OwnerId { get; set; } = 0x84;
         public int ObjectType { get; set; } = 0x8C;
         public int Distance { get; set; } = 0x92;
@@ -22,6 +23,6 @@ namespace MemLib.Ffxiv.Offsets.Structs {
         public int Icon { get; set; } = 0x18E0;
         public int World { get; set; } = 0x1898;
         public int HomeWorld { get; set; } = 0x189A;
-        public int Status { get; set; } = 0x1908;
+        public int Status { get; set; } = 0x1909;
     }
 }

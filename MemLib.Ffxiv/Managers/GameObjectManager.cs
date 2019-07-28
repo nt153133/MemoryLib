@@ -22,9 +22,10 @@ namespace MemLib.Ffxiv.Managers {
         private IEnumerable<GameObject> GetRawEntities() {
             if (!m_Process.Read<IntPtr>(m_Process.Offsets.ObjectListPtr, out var ptrArray, MaxObjects))
                 yield break;
-            //return ptrArray.Where(p => p != IntPtr.Zero).Distinct().Select(p => new GameObject(m_Process, p));
             foreach (var ptr in ptrArray.Where(p => p != IntPtr.Zero).Distinct()) {
                 var type = (GameObjectType) m_Process.Read<byte>(ptr + m_Process.Offsets.Character.ObjectType);
+                //yield return new Character(m_Process, ptr);
+                //continue;
                 switch (type) {
                     case GameObjectType.Unknown:
                     case GameObjectType.None:
@@ -77,6 +78,10 @@ namespace MemLib.Ffxiv.Managers {
 
         public GameObject GetObjectByObjectId(uint objectId) {
             return GameObjects.FirstOrDefault(o => o.ObjectId == objectId);
+        }
+
+        public T GetObjectByObjectId<T>(uint objectId) where T : GameObject {
+            return GameObjects.FirstOrDefault(o => o.ObjectId == objectId) as T;
         }
 
         public GameObject GetObjectByNpcId(uint npcId) {

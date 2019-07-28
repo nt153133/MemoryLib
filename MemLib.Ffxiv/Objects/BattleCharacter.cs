@@ -14,11 +14,7 @@ namespace MemLib.Ffxiv.Objects {
         public World HomeWorld => (World)m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.HomeWorld);
         public bool IsCrossWorld => CurrentWorld != HomeWorld;
 
-        #region Overrides of Character
-
-        public override uint NpcId { get; }
-
-        #endregion
+        public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId2);
 
         public BattleCharacter(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }

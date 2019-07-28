@@ -15,8 +15,8 @@ namespace TestApp {
                 //Print(string.Join("\n", proc.GameObjects.GameObjects.Select(o => $"{o}")));
                 //Print(proc.Player);
                 //Print(string.Join("\n", proc.Player.Levels.Select(kv => $"{kv.Key.ToString().PadRight(15)}:{kv.Value}")));
-                var objs = proc.GameObjects.GetObjectsByObjectType<BattleCharacter>(GameObjectType.Pc).Where(o => o.IsCrossWorld);
-                Print(string.Join("\n", objs.Select(o => $"{o} [{o.HomeWorld}, {o.CurrentWorld}]")));
+                var objs = proc.GameObjects.GetObjectsByType<GameObject>();
+                Print(string.Join("\n", objs.Select(o => $"{o} [{o.NpcId}]")));
             }
         }
 

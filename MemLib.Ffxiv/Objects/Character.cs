@@ -23,22 +23,19 @@ namespace MemLib.Ffxiv.Objects {
         public uint OwnerId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.OwnerId);
 
         public virtual bool HasTarget => CurrentTargetId != 0 && CurrentTargetId != GameObjectManager.EmptyGameObject;
-        public uint CurrentTargetId { get; }
-        public StatusFlags StatusFlags { get; }
+        public StatusFlags StatusFlags => (StatusFlags)m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.Status);
         public bool InCombat => StatusFlags.HasFlag(StatusFlags.InCombat);
         public bool IsNpc => NpcId > 0u;
+
+        public uint CurrentTargetId { get; }
         public Character TargetCharacter { get; }
         public GameObject TargetGameObject { get; }
         
-        #region Overrides of GameObject
-
         public override uint CurrentHealth => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.Health);
         public override uint MaxHealth => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.Health + 4);
         public override float CurrentHealthPercent => (float) CurrentHealth / MaxHealth * 100f;
 
         public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId);
-
-        #endregion
 
         public Character(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }
