@@ -17,6 +17,8 @@ namespace TestApp {
                 //Print(string.Join("\n", proc.Player.Levels.Select(kv => $"{kv.Key.ToString().PadRight(15)}:{kv.Value}")));
                 //var objs = proc.GameObjects.GetObjectsByType<Character>();
                 //Print(string.Join("\n", objs.Select(o => $"{o} [{o.CurrentTargetId:X}]")));
+                var objs = proc.GameObjects.GetObjectsByType<BattleCharacter>().Where(o => o.IsMounted);
+                Print(string.Join("\n", objs.Select(o => $"{o} [{o.MountId}]")));
             }
         }
 

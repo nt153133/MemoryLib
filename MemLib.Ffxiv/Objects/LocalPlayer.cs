@@ -5,8 +5,6 @@ using MemLib.Ffxiv.Enums;
 namespace MemLib.Ffxiv.Objects {
     public sealed class LocalPlayer : BattleCharacter {
         public BattleCharacter Pet => m_Process.GameObjects.CurrentPet;
-        public new Character Mount => null;
-
         public Stats Stats => m_Process.Read<Stats>(m_Process.Offsets.PlayerInfoPtr + m_Process.Offsets.PlayerInfo.StatsTable);
 
         public Dictionary<ClassJobType, ushort> Levels {

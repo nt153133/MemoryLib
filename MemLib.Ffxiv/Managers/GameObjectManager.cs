@@ -85,7 +85,9 @@ namespace MemLib.Ffxiv.Managers {
             return null;
         }
 
-        public GameObject GetObjectByName(string name) {
+        public GameObject GetObjectByName(string name, bool matchPartial = false) {
+            if(matchPartial)
+                return GameObjects.FirstOrDefault(o => o.Name.ToUpper().Contains(name.ToUpper()));
             return GameObjects.FirstOrDefault(o => o.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 

@@ -25,5 +25,7 @@ namespace MemLib.Ffxiv.Offsets.Structs {
         public int World { get; set; } = 0x1898;
         public int HomeWorld { get; set; } = 0x189A;
         public int Status { get; set; } = 0x1909;
+        public int MountId { get; set; } = 0x18FF;
+        public int Mount { get; set; } = 0x17B8;
     }
 }
