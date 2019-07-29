@@ -6,6 +6,7 @@ namespace MemLib.Ffxiv.Objects {
         protected readonly FfxivProcess m_Process;
         public IntPtr BaseAddress { get; internal set; }
         public IntPtr vTable => m_Process.Read<IntPtr>(BaseAddress);
+
         public virtual bool IsValid => BaseAddress != IntPtr.Zero;
 
         internal RemoteObject(FfxivProcess process, IntPtr baseAddress) {

@@ -10,11 +10,11 @@ namespace MemLib.Ffxiv.Managers {
         public const int MaxObjects = 424;
         public const uint EmptyGameObject = 0xE0000000;
 
-        public IEnumerable<GameObject> GameObjects => GetRawEntities();
+        public IEnumerable<GameObject> AllGameObjects => GetRawEntities();
         public LocalPlayer LocalPlayer => GetLocalPlayer();
         public GameObject Target => GetTarget();
         public BattleCharacter CurrentPet => GetPet();
-        public HashSet<BattleCharacter> Attackers { get; }
+        //public HashSet<BattleCharacter> Attackers { get; }
 
         internal GameObjectManager(FfxivProcess process) {
             m_Process = process;
@@ -87,44 +87,44 @@ namespace MemLib.Ffxiv.Managers {
 
         public GameObject GetObjectByName(string name, bool matchPartial = false) {
             if(matchPartial)
-                return GameObjects.FirstOrDefault(o => o.Name.ToUpper().Contains(name.ToUpper()));
-            return GameObjects.FirstOrDefault(o => o.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                return AllGameObjects.FirstOrDefault(o => o.Name.ToUpper().Contains(name.ToUpper()));
+            return AllGameObjects.FirstOrDefault(o => o.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public GameObject GetObjectByObjectId(uint objectId) {
-            return GameObjects.FirstOrDefault(o => o.ObjectId == objectId);
+            return AllGameObjects.FirstOrDefault(o => o.ObjectId == objectId);
         }
 
         public T GetObjectByObjectId<T>(uint objectId) where T : GameObject {
-            return GameObjects.FirstOrDefault(o => o.ObjectId == objectId) as T;
+            return AllGameObjects.FirstOrDefault(o => o.ObjectId == objectId) as T;
         }
 
         public GameObject GetObjectByNpcId(uint npcId) {
-            return GameObjects.FirstOrDefault(o => o.NpcId == npcId);
+            return AllGameObjects.FirstOrDefault(o => o.NpcId == npcId);
         }
 
         public T GetObjectByNpcId<T>(uint npcId) where T : GameObject {
-            return GameObjects.FirstOrDefault(o => o.NpcId == npcId) as T;
+            return AllGameObjects.FirstOrDefault(o => o.NpcId == npcId) as T;
         }
 
         public IEnumerable<GameObject> GetObjectsByNpcId(uint npcId) {
-            return GameObjects.Where(o => o.NpcId == npcId);
+            return AllGameObjects.Where(o => o.NpcId == npcId);
         }
 
         public IEnumerable<T> GetObjectsByNpcId<T>(uint npcId) where T : GameObject {
-            return GameObjects.Where(o => o.NpcId == npcId).Select(o => o as T);
+            return AllGameObjects.Where(o => o.NpcId == npcId).Select(o => o as T);
         }
 
         public IEnumerable<T> GetObjectsByNpcIds<T>(uint[] npcIds) where T : GameObject {
-            return GameObjects.Where(o => npcIds.Contains(o.NpcId)).Select(o => o as T);
+            return AllGameObjects.Where(o => npcIds.Contains(o.NpcId)).Select(o => o as T);
         }
 
         public IEnumerable<T> GetObjectsByObjectType<T>(GameObjectType type) where T : GameObject {
-            return GameObjects.Where(o => o.Type == type).Select(o => o as T);
+            return AllGameObjects.Where(o => o.Type == type).Select(o => o as T);
         }
 
         public IEnumerable<T> GetObjectsByType<T>() where T : GameObject {
-            return GameObjects.OfType<T>();
+            return AllGameObjects.OfType<T>();
         }
     }
 }

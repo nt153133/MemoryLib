@@ -17,9 +17,9 @@ namespace MemLib.Ffxiv.Objects {
             }
         }
 
-        public int ElementalLevel { get; }
-        public EurekaElement Element { get; }
-        public bool IsFate { get; }
+        //public int ElementalLevel { get; }
+        //public EurekaElement Element { get; }
+        //public bool IsFate { get; }
 
         public World CurrentWorld => (World)m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.World);
         public World HomeWorld => (World)m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.HomeWorld);

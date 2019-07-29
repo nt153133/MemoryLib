@@ -15,4 +15,19 @@
     <Value>8d81********85c075584c8b05</Value>
     <Offset>13</Offset>
   </Signature>
+  <Signature>
+    <Key>InventoryIds</Key>
+    <Value>8BD94D85C974**33C94C8D15</Value>
+    <Offset>12</Offset>
+  </Signature>
+  <Signature>
+    <Key>Targeting</Key>
+    <Value>41bc000000e041bd01000000493bc47555488d0d</Value>
+    <Offset>20</Offset>
+  </Signature>
+  <Signature>
+    <Key>Pet</Key>
+    <Value>3B15********74**8915</Value>
+    <Offset>2</Offset>
+  </Signature>
 </ArrayOfSignature>

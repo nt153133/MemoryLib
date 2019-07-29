@@ -6,6 +6,7 @@ namespace MemLib.Ffxiv.Offsets {
     public sealed class Offsets {
         public PlayerInfoOffsets PlayerInfo { get; set; } = new PlayerInfoOffsets();
         public CharacterOffsets Character { get; set; } = new CharacterOffsets();
+        public ItemOffsets Item { get; set; } = new ItemOffsets();
 
         #region Overrides of Object
 

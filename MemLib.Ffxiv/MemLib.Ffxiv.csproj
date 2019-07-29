@@ -50,6 +50,8 @@
     <Compile Include="Managers\GameObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="Objects\Aetheryte.cs" />
+    <Compile Include="Objects\Bag.cs" />
+    <Compile Include="Objects\BagSlot.cs" />
     <Compile Include="Objects\BattleCharacter.cs" />
     <Compile Include="Objects\Character.cs" />
     <Compile Include="Objects\EventObject.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="Offsets\OffsetManager.cs" />
     <Compile Include="Offsets\Signature.cs" />
     <Compile Include="Offsets\Structs\CharacterOffsets.cs" />
+    <Compile Include="Offsets\Structs\ItemOffsets.cs" />
     <Compile Include="Offsets\Structs\PlayerInfoOffsets.cs" />
     <Compile Include="Offsets\Offsets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
