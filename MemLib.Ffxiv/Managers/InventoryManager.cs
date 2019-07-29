@@ -10,14 +10,12 @@ namespace MemLib.Ffxiv.Managers {
         private static IntPtr m_InventoryPtr = IntPtr.Zero;
         private readonly Dictionary<InventoryBagId, Bag> m_Bags = new Dictionary<InventoryBagId, Bag>();
 
-        public IEnumerable<BagSlot> EquippedItems => GetBagByInventoryId(InventoryBagId.EquippedItems);
         public uint FreeSlots => (uint) GetBagsByInventoryId(InventoryIds).Sum(b => b.FreeSlots);
-        public IEnumerable<BagSlot> FilledSlots => GetSlots(InventoryKeyIds);
-        public IEnumerable<BagSlot> FilledArmorySlots => GetSlots(ArmouryIds);
+        public IEnumerable<BagSlot> EquippedSlots => GetBagByInventoryId(InventoryBagId.EquippedItems);
+        public IEnumerable<BagSlot> FilledInventorySlots => GetSlots(InventoryKeyIds);
+        public IEnumerable<BagSlot> FilledArmorySlots => GetSlots(ArmoryIds);
         public IEnumerable<BagSlot> FilledInventoryAndArmory => GetSlots(InventoryAndArmoryIds);
         
-        //public uint ItemCount(this Item item) => 0u;
-
         public Bag this[InventoryBagId id] => GetBagByInventoryId(id);
         
         internal InventoryManager(FfxivProcess process) {
@@ -76,7 +74,7 @@ namespace MemLib.Ffxiv.Managers {
             InventoryBagId.KeyItems
         };
 
-        private static readonly InventoryBagId[] ArmouryIds = {
+        private static readonly InventoryBagId[] ArmoryIds = {
             InventoryBagId.EquippedItems,
             InventoryBagId.ArmoryMainHand,
             InventoryBagId.ArmoryOffHand,

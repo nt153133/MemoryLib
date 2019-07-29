@@ -10,6 +10,10 @@ namespace MemLib.Ffxiv.Objects {
         public float Condition => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Item.Condition);
         public float SpiritBond => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Item.SpiritBond);
         public byte HqFlag => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.HqFlag);
+        public ushort[] MateriaId => m_Process.Read<ushort>(BaseAddress + m_Process.Offsets.Item.MateriaIds, 5);
+        public byte[] MateriaRank => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.MateriaRanks, 5);
+        public byte DyeId => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.DyeId);
+        public uint GlamourId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Item.GlamourId);
 
         internal bool Valid = true;
         public override bool IsValid => Valid;

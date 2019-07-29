@@ -31,13 +31,26 @@ namespace MemLib.Ffxiv.Offsets {
             ResolveSignatures();
         }
 
+        private static List<Signature> GetDefaultSignatures() {
+            return new List<Signature> {
+                new Signature{Key = "PlayerInfo", Value = "83f9ff7412448b048e8bd3488d0d", Offset = 14},
+                new Signature{Key = "ObjectList", Value = "488b420848c1e8033da701000077248bc0488d0d", Offset = 20},
+                new Signature{Key = "Inventory", Value = "8d81********85c075584c8b05", Offset = 13},
+                new Signature{Key = "InventoryIds", Value = "8BD94D85C974**33C94C8D15", Offset = 12},
+                new Signature{Key = "Targeting", Value = "41bc000000e041bd01000000493bc47555488d0d", Offset = 20},
+                new Signature{Key = "Pet", Value = "3B15********74**8915", Offset = 2},
+            };
+        }
+
         private void LoadOffsets() {
             if (!File.Exists(OffsetsFile)) {
+#if DEBUG
                 var dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 using (var fs = new FileStream(Path.Combine(dir, OffsetsFile), FileMode.Create)) {
                     var xml = new XmlSerializer(typeof(Offsets));
                     xml.Serialize(fs, m_Offsets);
                 }
+#endif
                 return;
             }
             using (var fs = new FileStream(OffsetsFile, FileMode.Open, FileAccess.Read, FileShare.Read)) {
@@ -60,25 +73,16 @@ namespace MemLib.Ffxiv.Offsets {
             }
         }
 
-        private static List<Signature> GetDefaultSignatures() {
-            return new List<Signature> {
-                new Signature{Key = "PlayerInfo", Value = "83f9ff7412448b048e8bd3488d0d", Offset = 14},
-                new Signature{Key = "ObjectList", Value = "488b420848c1e8033da701000077248bc0488d0d", Offset = 20},
-                new Signature{Key = "Inventory", Value = "8d81********85c075584c8b05", Offset = 13},
-                new Signature{Key = "InventoryIds", Value = "8BD94D85C974**33C94C8D15", Offset = 12},
-                new Signature{Key = "Targeting", Value = "41bc000000e041bd01000000493bc47555488d0d", Offset = 20},
-                new Signature{Key = "Pet", Value = "3B15********74**8915", Offset = 2},
-            };
-        }
-
         private void LoadSignatures() {
             m_Signatures = GetDefaultSignatures();
             if (!File.Exists(SignatureFile)) {
+#if DEBUG
                 var dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 using (var fs = new FileStream(Path.Combine(dir, SignatureFile), FileMode.Create)) {
                     var xml = new XmlSerializer(typeof(List<Signature>));
                     xml.Serialize(fs, m_Signatures);
                 }
+#endif
                 return;
             }
             using (var fs = new FileStream(SignatureFile, FileMode.Open, FileAccess.Read, FileShare.Read)) {

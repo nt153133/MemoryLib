@@ -8,12 +8,12 @@ namespace MemLib.Ffxiv.Objects {
     public class Bag : RemoteObject, IEnumerable<BagSlot> {
         private List<BagSlot> m_BagSlots = new List<BagSlot>();
 
-        public uint BagId => m_Process.Read<uint>(BaseAddress + 0x08);
+        public uint BagId => m_Process.Read<uint>(BaseAddress + 8);
         public InventoryBagId InventoryBagId => (InventoryBagId) BagId;
-        public uint TotalSlots => m_Process.Read<uint>(BaseAddress + 0x0C);
+        public uint TotalSlots => m_Process.Read<uint>(BaseAddress + 12);
         public uint FreeSlots => TotalSlots - UsedSlots;
         public uint UsedSlots => (uint) m_BagSlots.Sum(s => s.RawItemId == 0 ? 0 : 1);
-        public List<BagSlot> FilledSlots => m_BagSlots.Where(b => b.IsFilled).ToList();
+        public List<BagSlot> FilledSlots => m_BagSlots.Where(s => s.IsFilled).ToList();
 
         private bool m_Valid;
         public override bool IsValid => m_Valid;
@@ -35,6 +35,11 @@ namespace MemLib.Ffxiv.Objects {
             m_BagSlots.ForEach(b => b.Valid = false);
             m_BagSlots.Clear();
             m_BagSlots = null;
+        }
+
+        public bool FindItem(uint rawItemId, out BagSlot slot) {
+            slot = m_BagSlots.FirstOrDefault(b => b.RawItemId == rawItemId);
+            return slot != null;
         }
 
         public IEnumerator<BagSlot> GetEnumerator() {

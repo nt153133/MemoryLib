@@ -39,7 +39,6 @@
   <ItemGroup>
     <Compile Include="Enums\ClassJobType.cs" />
     <Compile Include="Enums\EquipmentSlot.cs" />
-    <Compile Include="Enums\EurekaElement.cs" />
     <Compile Include="Enums\GameObjectType.cs" />
     <Compile Include="Enums\GatheringType.cs" />
     <Compile Include="Enums\InventoryBagId.cs" />
