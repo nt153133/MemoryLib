@@ -27,9 +27,13 @@ namespace MemLib.Ffxiv.Managers {
         }
 
         private GameObject GetTarget() {
-            if(m_Process.Read<IntPtr>(m_Process.Offsets.TargetingPtr + 0x88, out var ptr))
+            if(m_Process.Read<IntPtr>(m_Process.Offsets.TargetingPtr + 0x88, out var ptr) && ptr != IntPtr.Zero)
                 return new GameObject(m_Process, ptr);
             return null;
+        }
+
+        internal GameObject GetObjectByPtr(IntPtr ptr) {
+            return AllGameObjects.FirstOrDefault(o => o.BaseAddress == ptr);
         }
 
         private IEnumerable<GameObject> GetRawEntities() {
@@ -92,30 +96,33 @@ namespace MemLib.Ffxiv.Managers {
         }
 
         public GameObject GetObjectByObjectId(uint objectId) {
-            return AllGameObjects.FirstOrDefault(o => o.ObjectId == objectId);
+            return objectId == 0u ? null : AllGameObjects.FirstOrDefault(o => o.ObjectId == objectId);
         }
 
         public T GetObjectByObjectId<T>(uint objectId) where T : GameObject {
+            if (objectId == 0u) return null;
             return AllGameObjects.FirstOrDefault(o => o.ObjectId == objectId) as T;
         }
 
         public GameObject GetObjectByNpcId(uint npcId) {
-            return AllGameObjects.FirstOrDefault(o => o.NpcId == npcId);
+            return npcId == 0u ? null : AllGameObjects.FirstOrDefault(o => o.NpcId == npcId);
         }
 
         public T GetObjectByNpcId<T>(uint npcId) where T : GameObject {
+            if (npcId == 0u) return null;
             return AllGameObjects.FirstOrDefault(o => o.NpcId == npcId) as T;
         }
 
         public IEnumerable<GameObject> GetObjectsByNpcId(uint npcId) {
-            return AllGameObjects.Where(o => o.NpcId == npcId);
+            return npcId == 0u ? Enumerable.Empty<GameObject>() : AllGameObjects.Where(o => o.NpcId == npcId);
         }
 
         public IEnumerable<T> GetObjectsByNpcId<T>(uint npcId) where T : GameObject {
+            if (npcId == 0u) return Enumerable.Empty<T>();
             return AllGameObjects.Where(o => o.NpcId == npcId).Select(o => o as T);
         }
 
-        public IEnumerable<T> GetObjectsByNpcIds<T>(uint[] npcIds) where T : GameObject {
+        public IEnumerable<T> GetObjectsByNpcIds<T>(params uint[] npcIds) where T : GameObject {
             return AllGameObjects.Where(o => npcIds.Contains(o.NpcId)).Select(o => o as T);
         }
 

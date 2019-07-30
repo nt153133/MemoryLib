@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Managers;
 
 namespace MemLib.Ffxiv.Objects {
     public sealed class LocalPlayer : BattleCharacter {
@@ -30,8 +31,17 @@ namespace MemLib.Ffxiv.Objects {
         }
 
         public override GameObject TargetGameObject => m_Process.GameObjects.Target;
-        public override Character TargetCharacter => m_Process.GameObjects.GetObjectByObjectId<Character>(CurrentTargetId);
-        public override uint CurrentTargetId => m_Process.Read<uint>(m_Process.Offsets.TargetingPtr + 0x160);
+        public override Character TargetCharacter => m_Process.GameObjects.GetObjectByObjectId<Character>(CurrentTargetObjId);
+        public uint CurrentTargetObjId {
+            get {
+                if (m_Process.Read<uint>(m_Process.Offsets.TargetingPtr + 0x160, out var id) &&
+                    id != GameObjectManager.EmptyGameObject)
+                    return id;
+                return 0u;
+            }
+        }
+        public override bool HasTarget => TargetGameObject != null && CurrentTargetObjId != 0u;
+
         public override bool IsValid => BaseAddress != IntPtr.Zero;
 
         private static ClassJobType[] m_ClassJobTypes;

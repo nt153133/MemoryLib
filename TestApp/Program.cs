@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
 using MemLib.Ffxiv;
-using MemLib.Ffxiv.Enums;
 
 namespace TestApp {
     internal class Program {
         private static void Test() {
             using (var proc = new FfxivProcess()) {
-
+                
             }
         }
 

@@ -14,6 +14,7 @@ namespace MemLib.Ffxiv.Objects {
         public GameObjectType Type => (GameObjectType) m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.ObjectType);
 
         public override bool IsValid => base.IsValid && ObjectId != 0u;
+        public bool IsMe => ObjectId == m_Process.GameObjects.LocalPlayer.ObjectId;
 
         internal GameObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
         

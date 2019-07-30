@@ -22,7 +22,7 @@ namespace MemLib.Ffxiv.Objects {
 
         public uint OwnerId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.OwnerId);
 
-        public bool HasTarget {
+        public virtual bool HasTarget {
             get {
                 var id = CurrentTargetId;
                 return id != 0 && id != GameObjectManager.EmptyGameObject;
