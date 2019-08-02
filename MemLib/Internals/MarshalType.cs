@@ -16,6 +16,8 @@ namespace MemLib.Internals {
         static MarshalType() {
             IsIntPtr = typeof(T) == typeof(IntPtr);
             RealType = typeof(T);
+            if (RealType.IsEnum)
+                RealType = RealType.GetEnumUnderlyingType();
             TypeCode = Type.GetTypeCode(RealType);
             Size = TypeCode == TypeCode.Boolean ? 1 : Marshal.SizeOf(RealType);
 

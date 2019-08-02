@@ -1,20 +1,29 @@
 ﻿using System;
 using System.Numerics;
 using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Managers;
 
 namespace MemLib.Ffxiv.Objects {
     public class GameObject : RemoteObject, IEquatable<GameObject> {
-        public string Name => m_Process.ReadString(BaseAddress + m_Process.Offsets.Character.Name, 64);
-        public uint ObjectId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId);
+        public virtual string Name => m_Process.ReadString(BaseAddress + m_Process.Offsets.Character.Name, 64);
         public virtual Vector3 Location => m_Process.Read<Vector3>(BaseAddress + m_Process.Offsets.Character.Location);
         public virtual uint NpcId => 0u;
         public virtual uint CurrentHealth => 0u;
         public virtual uint MaxHealth => 0u;
         public virtual float CurrentHealthPercent => 0f;
-        public GameObjectType Type => (GameObjectType) m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.ObjectType);
+        public GameObjectType Type => m_Process.Read<GameObjectType>(BaseAddress + m_Process.Offsets.Character.ObjectType);
 
         public override bool IsValid => base.IsValid && ObjectId != 0u;
         public bool IsMe => ObjectId == m_Process.GameObjects.LocalPlayer.ObjectId;
+
+        public uint ObjectId {
+            get {
+                var id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId);
+                if(id == GameObjectManager.EmptyGameObject)
+                    id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId2);
+                return id;
+            }
+        }
 
         internal GameObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
         

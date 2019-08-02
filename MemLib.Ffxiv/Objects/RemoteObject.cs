@@ -4,7 +4,7 @@
 namespace MemLib.Ffxiv.Objects {
     public class RemoteObject : IEquatable<RemoteObject> {
         protected readonly FfxivProcess m_Process;
-        public IntPtr BaseAddress { get; internal set; }
+        public IntPtr BaseAddress { get; private set; }
         public IntPtr vTable => m_Process.Read<IntPtr>(BaseAddress);
 
         public virtual bool IsValid => BaseAddress != IntPtr.Zero;
@@ -12,6 +12,10 @@ namespace MemLib.Ffxiv.Objects {
         internal RemoteObject(FfxivProcess process, IntPtr baseAddress) {
             m_Process = process;
             BaseAddress = baseAddress;
+        }
+
+        internal void UpdatePointer(IntPtr address) {
+            BaseAddress = address;
         }
 
         #region Overrides of Object

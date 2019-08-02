@@ -3,11 +3,13 @@ namespace MemLib.Ffxiv.Offsets.Structs {
     public class CharacterOffsets {
         public int Name { get; set; } = 0x30;
         public int ObjectId { get; set; } = 0x74;
-        //public int NpcId1 { get; set; } = 0x78;
+
+        public int ObjectId2 { get; set; } = 0x78;
         public int NpcId { get; set; } = 0x80;
-        public int NpcId2 { get; set; } = 0x187C;
+        public int BNpcNameId { get; set; } = 0x187C;
+
         public int TargetId { get; set; } = 0x1E8;
-        public int OwnerId { get; set; } = 0x84;
+        public int OwnerId { get; set; } = 0x188C;
         public int ObjectType { get; set; } = 0x8C;
         public int Distance { get; set; } = 0x92;
         public int Location { get; set; } = 0xA0;
@@ -27,5 +29,10 @@ namespace MemLib.Ffxiv.Offsets.Structs {
         public int Status { get; set; } = 0x1909;
         public int MountId { get; set; } = 0x18FF;
         public int Mount { get; set; } = 0x17B8;
+
+        public int CastingSpellId { get; set; } = 0x1C54;
+        public int CastingTargetId { get; set; } = 0x1C60;
+        public int CurrentCastTime { get; set; } = 0x1C84;
+        public int CastTime { get; set; } = 0x1C88;
     }
 }

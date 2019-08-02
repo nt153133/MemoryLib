@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,18 +35,24 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\ClassJobType.cs" />
     <Compile Include="Enums\EquipmentSlot.cs" />
     <Compile Include="Enums\GameObjectType.cs" />
     <Compile Include="Enums\GatheringType.cs" />
     <Compile Include="Enums\InventoryBagId.cs" />
+    <Compile Include="Enums\MateriaType.cs" />
     <Compile Include="Enums\PlayerIcon.cs" />
     <Compile Include="Enums\StatusFlags.cs" />
     <Compile Include="Enums\World.cs" />
     <Compile Include="FfxivProcess.cs" />
+    <Compile Include="Objects\SpellCastInfo.cs" />
+    <Compile Include="Test.cs" />
+    <Compile Include="XivApi\JsonParser.cs" />
     <Compile Include="Managers\GameObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="Objects\Aetheryte.cs" />
@@ -69,6 +76,12 @@
     <Compile Include="Offsets\Structs\PlayerInfoOffsets.cs" />
     <Compile Include="Offsets\Offsets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XivApi\Endpoints\CharacterEndpoint.cs" />
+    <Compile Include="XivApi\Endpoints\ItemsEndpoint.cs" />
+    <Compile Include="XivApi\ResultObjects\ItemListResult.cs" />
+    <Compile Include="XivApi\ResultObjects\ItemListResultEntry.cs" />
+    <Compile Include="XivApi\ResultObjects\Pagination.cs" />
+    <Compile Include="XivApi\XivApiClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MemLib\MemLib.csproj">

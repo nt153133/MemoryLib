@@ -12,6 +12,7 @@ namespace MemLib.Ffxiv.Managers {
 
         public uint FreeSlots => (uint) GetBagsByInventoryId(InventoryIds).Sum(b => b.FreeSlots);
         public IEnumerable<BagSlot> EquippedSlots => GetBagByInventoryId(InventoryBagId.EquippedItems);
+        public IEnumerable<BagSlot> ExamineSlots => GetBagByInventoryId(InventoryBagId.Examine);
         public IEnumerable<BagSlot> FilledInventorySlots => GetSlots(InventoryKeyIds);
         public IEnumerable<BagSlot> FilledArmorySlots => GetSlots(ArmoryIds);
         public IEnumerable<BagSlot> FilledInventoryAndArmory => GetSlots(InventoryAndArmoryIds);

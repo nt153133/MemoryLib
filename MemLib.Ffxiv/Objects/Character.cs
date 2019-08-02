@@ -18,7 +18,7 @@ namespace MemLib.Ffxiv.Objects {
         public float CurrentCPPercent => (float) CurrentCP / MaxCP * 100f;
 
         public uint Level => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.ClassLevel);
-        public ClassJobType ClassJob => (ClassJobType)m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.ClassJob);
+        public ClassJobType ClassJob => m_Process.Read<ClassJobType>(BaseAddress + m_Process.Offsets.Character.ClassJob);
 
         public uint OwnerId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.OwnerId);
 
@@ -29,7 +29,7 @@ namespace MemLib.Ffxiv.Objects {
             }
         }
 
-        public StatusFlags StatusFlags => (StatusFlags)m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.Status);
+        public StatusFlags StatusFlags => m_Process.Read<StatusFlags>(BaseAddress + m_Process.Offsets.Character.Status);
         public bool InCombat => StatusFlags.HasFlag(StatusFlags.InCombat);
         public bool IsNpc => NpcId > 0u;
 
@@ -43,6 +43,10 @@ namespace MemLib.Ffxiv.Objects {
 
         public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId);
 
+        private SpellCastInfo m_SpellCastInfo;
+        public SpellCastInfo SpellCastInfo => m_SpellCastInfo ?? (m_SpellCastInfo = new SpellCastInfo(m_Process, BaseAddress + 0));
+        public bool IsCasting => CastingSpellId > 0u;
+        public uint CastingSpellId => SpellCastInfo.ActionId;
         internal Character(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }
 }

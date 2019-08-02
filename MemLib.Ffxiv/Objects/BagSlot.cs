@@ -3,14 +3,14 @@ using MemLib.Ffxiv.Enums;
 
 namespace MemLib.Ffxiv.Objects {
     public class BagSlot : RemoteObject {
-        public InventoryBagId BagId => (InventoryBagId)m_Process.Read<uint>(BaseAddress);
+        public InventoryBagId BagId => m_Process.Read<InventoryBagId>(BaseAddress);
         public uint RawItemId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Item.RawItemId);
         public uint Count => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Item.Count);
         public ushort Slot => m_Process.Read<ushort>(BaseAddress + m_Process.Offsets.Item.Slot);
         public float Condition => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Item.Condition);
         public float SpiritBond => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Item.SpiritBond);
         public byte HqFlag => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.HqFlag);
-        public ushort[] MateriaId => m_Process.Read<ushort>(BaseAddress + m_Process.Offsets.Item.MateriaIds, 5);
+        public MateriaType[] MateriaTypes => m_Process.Read<MateriaType>(BaseAddress + m_Process.Offsets.Item.MateriaIds, 5);
         public byte[] MateriaRank => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.MateriaRanks, 5);
         public byte DyeId => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.DyeId);
         public uint GlamourId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Item.GlamourId);

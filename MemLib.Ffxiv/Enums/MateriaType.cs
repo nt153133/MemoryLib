@@ -1,0 +1,31 @@
+﻿// ReSharper disable InconsistentNaming
+namespace MemLib.Ffxiv.Enums {
+    public enum MateriaType : ushort {
+        None = 0,
+        Cracked,
+        Strength,
+        Vitality,
+        Dexterity,
+        Intelligence,
+        Mind,
+        Piety,
+        FireResistance,
+        IceResistance,
+        WindResistance,
+        EarthResistance,
+        LightningResistance,
+        WaterResistance,
+        DirectHitRate,
+        CriticalHit,
+        Determination,
+        Tenacity,
+        Gathering,
+        Perception,
+        GP,
+        Craftsmanship,
+        CP,
+        Control,
+        SkillSpeed,
+        SpellSpeed,
+    }
+}
