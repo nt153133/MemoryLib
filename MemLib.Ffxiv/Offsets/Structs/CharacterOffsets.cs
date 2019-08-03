@@ -34,5 +34,7 @@ namespace MemLib.Ffxiv.Offsets.Structs {
         public int CastingTargetId { get; set; } = 0x1C60;
         public int CurrentCastTime { get; set; } = 0x1C84;
         public int CastTime { get; set; } = 0x1C88;
+
+        public int AuraList { get; set; } = 0x1968;
     }
 }

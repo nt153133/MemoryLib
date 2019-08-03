@@ -49,6 +49,8 @@
     <Compile Include="Enumerations\StatusFlags.cs" />
     <Compile Include="Enumerations\World.cs" />
     <Compile Include="FfxivProcess.cs" />
+    <Compile Include="Objects\Aura.cs" />
+    <Compile Include="Objects\Auras.cs" />
     <Compile Include="Objects\SpellCastInfo.cs" />
     <Compile Include="Managers\GameObjectManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Objects\Minion.cs" />
     <Compile Include="Objects\RemoteObject.cs" />
     <Compile Include="Offsets\Structs\TargetOffsets.cs" />
+    <Compile Include="Structures\AuraData.cs" />
     <Compile Include="Structures\Stats.cs" />
     <Compile Include="Objects\Treasure.cs" />
     <Compile Include="Offsets\OffsetManager.cs" />

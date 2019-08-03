@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Managers;
 // ReSharper disable InconsistentNaming
@@ -47,6 +48,22 @@ namespace MemLib.Ffxiv.Objects {
         public SpellCastInfo SpellCastInfo => m_SpellCastInfo ?? (m_SpellCastInfo = new SpellCastInfo(m_Process, BaseAddress + 0));
         public bool IsCasting => CastingSpellId > 0u;
         public uint CastingSpellId => SpellCastInfo.ActionId;
+
+        private Auras m_Auras;
+        public Auras CharacterAuras => m_Auras ?? (m_Auras = new Auras(m_Process, BaseAddress + m_Process.Offsets.Character.AuraList));
+        public bool HasAuras => CharacterAuras.AuraList.Count != 0;
+
+        public bool HasMyAura(uint auraId) {
+            return CharacterAuras.Any(a => a.Id == auraId && a.CasterId == m_Process.GameObjects.LocalPlayer.ObjectId);
+        }
+
+        public bool HasAura(uint auraId) {
+            return CharacterAuras.Any(a => a.Id == auraId);
+        }
+
+        public Aura GetAuraById(uint auraId) {
+            return CharacterAuras.FirstOrDefault(a => a.Id == auraId);
+        }
 
         internal Character(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }

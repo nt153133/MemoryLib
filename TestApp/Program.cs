@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using MemLib.Ffxiv;
-using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Objects;
 
 namespace TestApp {
@@ -9,6 +8,11 @@ namespace TestApp {
         private static void Test() {
             using (var ff = new FfxivProcess()) {
                 ff.GameObjects.Update();
+                var list = ff.GameObjects.GetObjectsOfType<Character>(true, true);
+                foreach (var obj in list.Where(o => o.HasMyAura(158))) {
+                    Print($"{obj}\n" +
+                          $"{string.Join("\n", obj.CharacterAuras.Select(a => $"\t{a}"))}");
+                }
             }
         }
 
