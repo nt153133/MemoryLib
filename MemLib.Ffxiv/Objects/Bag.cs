@@ -42,6 +42,8 @@ namespace MemLib.Ffxiv.Objects {
             return slot != null;
         }
 
+        #region Implementation of IEnumerable
+
         public IEnumerator<BagSlot> GetEnumerator() {
             return m_BagSlots.GetEnumerator();
         }
@@ -50,8 +52,14 @@ namespace MemLib.Ffxiv.Objects {
             return GetEnumerator();
         }
 
+        #endregion
+
+        #region Overrides of RemoteObject
+
         public override string ToString() {
             return $"{InventoryBagId}:\n{string.Join("\n", FilledSlots.Select(s => $"{s.ToString().PadLeft(4)}"))}";
         }
+        
+        #endregion
     }
 }

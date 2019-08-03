@@ -17,16 +17,20 @@ namespace MemLib.Ffxiv.Objects {
 
         internal bool Valid = true;
         public override bool IsValid => Valid;
-        public bool IsHq => (HqFlag & 1) == 1;
+        public bool IsHighQuality => (HqFlag & 1) == 1;
         public bool IsCollectable => (HqFlag & 8) > 0;
         public bool IsFilled => RawItemId > 0u;
 
         internal BagSlot(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
 
+        #region Overrides of RemoteObject
+
         public override string ToString() {
-            if (!IsValid)
-                return $"0x{BaseAddress.ToInt64():X} - Invalid Item";
-            return $"0x{BaseAddress.ToInt64():X} - ItemID={RawItemId}, Count={Count}, IsHq={IsHq}";
+            return IsValid ?
+                $"0x{BaseAddress.ToInt64():X} ItemID:{RawItemId}" :
+                $"Invalid Item {RawItemId}";
         }
+
+        #endregion
     }
 }

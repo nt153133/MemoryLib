@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using MemLib.Ffxiv.Enumerations;
@@ -7,7 +8,7 @@ using MemLib.Ffxiv.Objects;
 namespace MemLib.Ffxiv.Managers {
     public sealed class GameObjectManager {
         private readonly FfxivProcess m_Process;
-        private readonly Dictionary<uint, GameObject> m_CachedEntities = new Dictionary<uint, GameObject>(MaxObjects);
+        private readonly ConcurrentDictionary<uint, GameObject> m_CachedEntities = new ConcurrentDictionary<uint, GameObject>();
 
         public const int MaxObjects = 424;
         public const uint EmptyGameObject = 0xE0000000;
@@ -82,7 +83,7 @@ namespace MemLib.Ffxiv.Managers {
                     if(gameObject is BattleCharacter attacker)
                         Attackers.Add(attacker);
                 } else {
-                    m_CachedEntities.Add(objId, entity);
+                    m_CachedEntities.GetOrAdd(objId, entity);
                     if (!attackerIds.Contains(objId)) continue;
                     if (entity is BattleCharacter attacker)
                         Attackers.Add(attacker);
@@ -91,7 +92,7 @@ namespace MemLib.Ffxiv.Managers {
 
             var invalidObjKeys = m_CachedEntities.Where(kv => kv.Value.BaseAddress == IntPtr.Zero).Select(kv => kv.Key).ToList();
             foreach (var invalidKey in invalidObjKeys) {
-                m_CachedEntities.Remove(invalidKey);
+                m_CachedEntities.TryRemove(invalidKey, out _);
             }
         }
 

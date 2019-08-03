@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using MemLib.Ffxiv.Enumerations;
@@ -8,7 +9,7 @@ namespace MemLib.Ffxiv.Managers {
     public sealed class InventoryManager {
         private readonly FfxivProcess m_Process;
         private static IntPtr m_InventoryPtr = IntPtr.Zero;
-        private readonly Dictionary<InventoryBagId, Bag> m_Bags = new Dictionary<InventoryBagId, Bag>();
+        private readonly ConcurrentDictionary<InventoryBagId, Bag> m_Bags = new ConcurrentDictionary<InventoryBagId, Bag>();
 
         public uint FreeSlots => (uint) GetBagsByInventoryId(InventoryIds).Sum(b => b.FreeSlots);
         public IEnumerable<BagSlot> EquippedSlots => GetBagByInventoryId(InventoryBagId.EquippedItems);
@@ -43,7 +44,7 @@ namespace MemLib.Ffxiv.Managers {
                 if(!Enum.IsDefined(typeof(InventoryBagId), idArray[i])) continue;
                 if (m_Process.Read<IntPtr>(invPtr + i * 24, out var ptr) && ptr != IntPtr.Zero)
                     m_Bags[(InventoryBagId) idArray[i]] = new Bag(m_Process, invPtr + i * 24);
-                else m_Bags.Remove((InventoryBagId) idArray[i]);
+                else m_Bags.TryRemove((InventoryBagId) idArray[i], out _);
             }
         }
 
