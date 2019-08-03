@@ -1,5 +1,5 @@
 ﻿using System;
-using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Managers;
 // ReSharper disable InconsistentNaming
 
@@ -41,12 +41,16 @@ namespace MemLib.Ffxiv.Objects {
         public override uint MaxHealth => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.Health + 4);
         public override float CurrentHealthPercent => (float) CurrentHealth / MaxHealth * 100f;
 
+        public bool IsDead => CurrentHealth <= 0 && MaxHealth > 0;
+        public bool IsAlive => !IsDead;
+
         public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId);
 
         private SpellCastInfo m_SpellCastInfo;
         public SpellCastInfo SpellCastInfo => m_SpellCastInfo ?? (m_SpellCastInfo = new SpellCastInfo(m_Process, BaseAddress + 0));
         public bool IsCasting => CastingSpellId > 0u;
         public uint CastingSpellId => SpellCastInfo.ActionId;
+
         internal Character(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
     }
 }

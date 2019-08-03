@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Objects;
 
 namespace MemLib.Ffxiv.Managers {
@@ -31,7 +31,7 @@ namespace MemLib.Ffxiv.Managers {
 
         public GameObject Target => GetTarget();
         public BattleCharacter CurrentPet => GetPet();
-        //public HashSet<BattleCharacter> Attackers { get; }
+        public HashSet<BattleCharacter> Attackers { get; private set; } = new HashSet<BattleCharacter>();
 
         internal GameObjectManager(FfxivProcess process) {
             m_Process = process;
@@ -46,12 +46,29 @@ namespace MemLib.Ffxiv.Managers {
                 gameObject.UpdatePointer(IntPtr.Zero);
             }
 
+            Attackers = new HashSet<BattleCharacter>();
+            var attackersCount = m_Process.Read<int>(m_Process.Offsets.AttackerCountPtr);
+            var attackerIds = new HashSet<uint>(attackersCount);
+            for (var i = 0; i < attackersCount; i++) {
+                var id = m_Process.Read<uint>(m_Process.Offsets.AttackerListPtr + i * 0x48);
+                if (id > 0 && id != EmptyGameObject)
+                    attackerIds.Add(id);
+            }
+
             foreach (var entity in GetRawEntities()) {
                 if (entity == null || entity.BaseAddress == IntPtr.Zero) continue;
                 var objId = entity.ObjectId;
-                if (m_CachedEntities.TryGetValue(objId, out var gameObject))
+                if (m_CachedEntities.TryGetValue(objId, out var gameObject)) {
                     gameObject.UpdatePointer(entity.BaseAddress);
-                else m_CachedEntities.Add(objId, entity);
+                    if (!attackerIds.Contains(objId)) continue;
+                    if(gameObject is BattleCharacter attacker)
+                        Attackers.Add(attacker);
+                } else {
+                    m_CachedEntities.Add(objId, entity);
+                    if (!attackerIds.Contains(objId)) continue;
+                    if (entity is BattleCharacter attacker)
+                        Attackers.Add(attacker);
+                }
             }
 
             var invalidObjKeys = m_CachedEntities.Where(kv => kv.Value.BaseAddress == IntPtr.Zero).Select(kv => kv.Key).ToList();

@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace MemLib.Ffxiv.Enums {
+namespace MemLib.Ffxiv.Enumerations {
     public enum MateriaType : ushort {
         None = 0,
         Cracked,

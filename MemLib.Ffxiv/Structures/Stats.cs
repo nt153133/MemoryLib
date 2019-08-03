@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace MemLib.Ffxiv.Objects {
+namespace MemLib.Ffxiv.Structures {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct Stats {
         public override string ToString() {

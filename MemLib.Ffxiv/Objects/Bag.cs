@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Enumerations;
 
 namespace MemLib.Ffxiv.Objects {
     public class Bag : RemoteObject, IEnumerable<BagSlot> {

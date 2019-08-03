@@ -18,6 +18,8 @@ namespace MemLib.Ffxiv.Offsets {
         public IntPtr InventoryPtr => m_ResolvedSignatures["Inventory"];
         public IntPtr InventoryIdsPtr => m_ResolvedSignatures["InventoryIds"];
         public IntPtr PetPtr => m_ResolvedSignatures["Pet"];
+        public IntPtr AttackerListPtr => m_ResolvedSignatures["AttackerList"];
+        public IntPtr AttackerCountPtr => m_ResolvedSignatures["AttackerCount"];
 
         private Offsets m_Offsets = new Offsets();
         public CharacterOffsets Character => m_Offsets.Character;
@@ -39,6 +41,8 @@ namespace MemLib.Ffxiv.Offsets {
                 new Signature{Key = "InventoryIds", Value = "8BD94D85C974**33C94C8D15", Offset = 12},
                 new Signature{Key = "Targeting", Value = "41bc000000e041bd01000000493bc47555488d0d", Offset = 20},
                 new Signature{Key = "Pet", Value = "3B15********74**8915", Offset = 2},
+                new Signature{Key = "AttackerList", Value = "418BDF391D********0F8E********488D3D", Offset = 18},
+                new Signature{Key = "AttackerCount", Value = "418BDF391D********0F8E********488D3D", Offset = 5},
             };
         }
 

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Managers;
+using MemLib.Ffxiv.Structures;
 
 namespace MemLib.Ffxiv.Objects {
     public sealed class LocalPlayer : BattleCharacter {

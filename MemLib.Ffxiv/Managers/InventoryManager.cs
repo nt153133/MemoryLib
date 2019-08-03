@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Objects;
 
 namespace MemLib.Ffxiv.Managers {

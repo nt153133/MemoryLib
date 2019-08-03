@@ -1,5 +1,5 @@
 ﻿using System;
-using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Enumerations;
 
 namespace MemLib.Ffxiv.Objects {
     public class BattleCharacter : Character {

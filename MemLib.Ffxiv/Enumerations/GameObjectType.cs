@@ -1,4 +1,4 @@
-﻿namespace MemLib.Ffxiv.Enums {
+﻿namespace MemLib.Ffxiv.Enumerations {
     public enum GameObjectType : byte {
         None = 0x00,
         Pc = 0x01,

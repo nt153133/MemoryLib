@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
-using MemLib.Ffxiv.Enums;
+using MemLib.Ffxiv.Enumerations;
+using MemLib.Ffxiv.Structures;
 
 namespace MemLib.Ffxiv.Objects {
     public class SpellCastInfo : RemoteObject {

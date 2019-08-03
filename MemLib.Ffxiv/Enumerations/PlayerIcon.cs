@@ -1,4 +1,4 @@
-﻿namespace MemLib.Ffxiv.Enums {
+﻿namespace MemLib.Ffxiv.Enumerations {
     public enum PlayerIcon : byte {
         None = 0,
         Producer,
