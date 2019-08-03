@@ -64,6 +64,7 @@
     <Compile Include="Objects\LocalPlayer.cs" />
     <Compile Include="Objects\Minion.cs" />
     <Compile Include="Objects\RemoteObject.cs" />
+    <Compile Include="Offsets\Structs\TargetOffsets.cs" />
     <Compile Include="Structures\Stats.cs" />
     <Compile Include="Objects\Treasure.cs" />
     <Compile Include="Offsets\OffsetManager.cs" />

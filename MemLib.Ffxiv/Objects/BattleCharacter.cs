@@ -6,7 +6,7 @@ namespace MemLib.Ffxiv.Objects {
         public PlayerIcon Icon => m_Process.Read<PlayerIcon>(BaseAddress + m_Process.Offsets.Character.Icon);
         public byte MountId => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.MountId);
         public bool IsMounted => MountId > 0;
-
+        //public Character Mount => GameObjectManager.GetObjectsOfType<Character>().FirstOrDefault((Character character_0) => character_0.SummonerObjectId == base.ObjectId);
         //public int ElementalLevel { get; }
         //public EurekaElement Element { get; }
         //public bool IsFate { get; }

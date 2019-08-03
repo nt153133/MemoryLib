@@ -5,19 +5,8 @@ using MemLib.Ffxiv.Structures;
 
 namespace MemLib.Ffxiv.Objects {
     public class GameObject : RemoteObject, IEquatable<GameObject> {
-        public uint ObjectId {
-            get {
-                var id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId);
-                if (id == GameObjectManager.EmptyGameObject)
-                    id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId2);
-                return id;
-            }
-        }
         public GameObjectType Type => m_Process.Read<GameObjectType>(BaseAddress + m_Process.Offsets.Character.ObjectType);
         public virtual string Name => m_Process.ReadString(BaseAddress + m_Process.Offsets.Character.Name, 64);
-        public virtual uint NpcId => 0u;
-        public override bool IsValid => base.IsValid && ObjectId != 0u;
-        public bool IsMe => ObjectId == m_Process.GameObjects.LocalPlayer.ObjectId;
         public virtual Vector3 Location => m_Process.Read<Vector3>(BaseAddress + m_Process.Offsets.Character.Location);
         public float X => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location);
         public float Y => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location + 4);
@@ -25,8 +14,21 @@ namespace MemLib.Ffxiv.Objects {
         public virtual uint CurrentHealth => 0u;
         public virtual uint MaxHealth => 0u;
         public virtual float CurrentHealthPercent => 0f;
+        public virtual uint NpcId => 0u;
+        public override bool IsValid => base.IsValid && GetObjectId() == ObjectId;
+        public bool IsMe => ObjectId == m_Process.GameObjects.LocalPlayer.ObjectId;
+        public uint ObjectId { get; }
 
-        internal GameObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
+        internal GameObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) {
+            ObjectId = GetObjectId();
+        }
+
+        private uint GetObjectId() {
+            var id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId);
+            if (id == GameObjectManager.EmptyGameObject)
+                id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId2);
+            return id;
+        }
 
         public float Distance() {
             return Distance(m_Process.GameObjects.LocalPlayer);
@@ -51,7 +53,7 @@ namespace MemLib.Ffxiv.Objects {
         #region Overrides of RemoteObject
 
         public override string ToString() {
-            return $"{base.ToString()} - {Name.PadRight(25)}[{Type}]";
+            return $"{Name} 0x{BaseAddress.ToInt64():X}";
         }
 
         #endregion

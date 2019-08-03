@@ -1,5 +1,5 @@
 ﻿namespace MemLib.Ffxiv.Enumerations {
-    public enum World {
+    public enum World : byte {
         Asura = 23,
         Belias = 24,
         Pandaemonium = 28,

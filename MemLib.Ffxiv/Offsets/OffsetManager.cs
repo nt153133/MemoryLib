@@ -25,7 +25,8 @@ namespace MemLib.Ffxiv.Offsets {
         public CharacterOffsets Character => m_Offsets.Character;
         public PlayerInfoOffsets PlayerInfo => m_Offsets.PlayerInfo;
         public ItemOffsets Item => m_Offsets.Item;
-        
+        public TargetOffsets Target => m_Offsets.Target;
+
         internal OffsetManager(FfxivProcess process) {
             m_Process = process;
             LoadOffsets();
@@ -39,7 +40,7 @@ namespace MemLib.Ffxiv.Offsets {
                 new Signature{Key = "ObjectList", Value = "488b420848c1e8033da701000077248bc0488d0d", Offset = 20},
                 new Signature{Key = "Inventory", Value = "8d81********85c075584c8b05", Offset = 13},
                 new Signature{Key = "InventoryIds", Value = "8BD94D85C974**33C94C8D15", Offset = 12},
-                new Signature{Key = "Targeting", Value = "41bc000000e041bd01000000493bc47555488d0d", Offset = 20},
+                new Signature{Key = "Targeting", Value = "488B05********4885C07507488B05********C3", Offset = 3},
                 new Signature{Key = "Pet", Value = "3B15********74**8915", Offset = 2},
                 new Signature{Key = "AttackerList", Value = "418BDF391D********0F8E********488D3D", Offset = 18},
                 new Signature{Key = "AttackerCount", Value = "418BDF391D********0F8E********488D3D", Offset = 5},

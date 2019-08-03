@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 
 namespace MemLib.Ffxiv.Objects {
     public class Aetheryte : GameObject {

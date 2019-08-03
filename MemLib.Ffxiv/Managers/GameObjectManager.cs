@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Objects;
@@ -8,7 +7,7 @@ using MemLib.Ffxiv.Objects;
 namespace MemLib.Ffxiv.Managers {
     public sealed class GameObjectManager {
         private readonly FfxivProcess m_Process;
-        private readonly Dictionary<uint, GameObject> m_CachedEntities = new Dictionary<uint, GameObject>();
+        private readonly Dictionary<uint, GameObject> m_CachedEntities = new Dictionary<uint, GameObject>(MaxObjects);
 
         public const int MaxObjects = 424;
         public const uint EmptyGameObject = 0xE0000000;
@@ -29,8 +28,25 @@ namespace MemLib.Ffxiv.Managers {
             }
         }
 
-        public GameObject Target => GetTarget();
-        public BattleCharacter CurrentPet => GetPet();
+        public GameObject Target {
+            get {
+                var addr = m_Process.Offsets.TargetingPtr + m_Process.Offsets.Target.CurrentTargetId;
+                if (!m_Process.Read<uint>(addr, out var targetId) 
+                    || targetId == 0 
+                    || targetId == EmptyGameObject)
+                    return null;
+                return m_CachedEntities.TryGetValue(targetId, out var target) ? target : null;
+            }
+        }
+
+        public BattleCharacter CurrentPet {
+            get {
+                if (m_Process.Read<uint>(m_Process.Offsets.PetPtr, out var petId))
+                    return GetObjectByObjectId<BattleCharacter>(petId);
+                return null;
+            }
+        }
+
         public HashSet<BattleCharacter> Attackers { get; private set; } = new HashSet<BattleCharacter>();
 
         internal GameObjectManager(FfxivProcess process) {
@@ -58,6 +74,8 @@ namespace MemLib.Ffxiv.Managers {
             foreach (var entity in GetRawEntities()) {
                 if (entity == null || entity.BaseAddress == IntPtr.Zero) continue;
                 var objId = entity.ObjectId;
+                if(objId == 0 || objId == EmptyGameObject) continue;
+
                 if (m_CachedEntities.TryGetValue(objId, out var gameObject)) {
                     gameObject.UpdatePointer(entity.BaseAddress);
                     if (!attackerIds.Contains(objId)) continue;
@@ -75,19 +93,6 @@ namespace MemLib.Ffxiv.Managers {
             foreach (var invalidKey in invalidObjKeys) {
                 m_CachedEntities.Remove(invalidKey);
             }
-            Debug.WriteLine($"Cached: {m_CachedEntities.Count}");
-        }
-
-        private BattleCharacter GetPet() {
-            if (m_Process.Read<uint>(m_Process.Offsets.PetPtr, out var petId))
-                return GetObjectByObjectId<BattleCharacter>(petId);
-            return null;
-        }
-
-        private GameObject GetTarget() {
-            if(m_Process.Read<IntPtr>(m_Process.Offsets.TargetingPtr + 0x88, out var ptr) && ptr != IntPtr.Zero)
-                return new GameObject(m_Process, ptr);
-            return null;
         }
 
         private IEnumerable<GameObject> GetRawEntities() {
@@ -134,8 +139,10 @@ namespace MemLib.Ffxiv.Managers {
             return GameObjects.FirstOrDefault(o => o.BaseAddress == ptr);
         }
 
+        #region ByName
+
         public GameObject GetObjectByName(string name, bool matchPartial = false) {
-            if(matchPartial)
+            if (matchPartial)
                 return GameObjects.FirstOrDefault(o => o.Name.ToUpper().Contains(name.ToUpper()));
             return GameObjects.FirstOrDefault(o => o.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
@@ -146,6 +153,10 @@ namespace MemLib.Ffxiv.Managers {
             return GameObjects.Where(o => o.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
+        #endregion
+
+        #region ByObjectId
+
         public GameObject GetObjectByObjectId(uint objectId) {
             return m_CachedEntities.TryGetValue(objectId, out var gameObject) ? gameObject : null;
         }
@@ -153,6 +164,15 @@ namespace MemLib.Ffxiv.Managers {
         public T GetObjectByObjectId<T>(uint objectId) where T : GameObject {
             return m_CachedEntities.TryGetValue(objectId, out var gameObject) ? gameObject as T : null;
         }
+
+
+        public IEnumerable<GameObject> GetObjectsByObjectIds(params uint[] objectIds) {
+            return m_CachedEntities.Where(kv => objectIds.Contains(kv.Key)).Select(kv => kv.Value);
+        }
+
+        #endregion
+
+        #region ByNpcId
 
         public GameObject GetObjectByNpcId(uint npcId) {
             return npcId == 0u ? null : GameObjects.FirstOrDefault(o => o.NpcId == npcId);
@@ -174,8 +194,12 @@ namespace MemLib.Ffxiv.Managers {
             return GameObjects.Where(o => npcIds.Contains(o.NpcId)).Select(o => o as T).ToArray();
         }
 
-        public IEnumerable<GameObject> GetObjectsByObjectIds(IEnumerable<uint> objectIds) {
-            return GameObjects.Where(o => objectIds.Contains(o.ObjectId));
+        #endregion
+
+        #region ByType
+
+        public IEnumerable<T> GetObjectsByObjectType<T>(GameObjectType type) where T : GameObject {
+            return GameObjects.Where(o => o.Type == type).Select(o => o as T);
         }
 
         public IEnumerable<T> GetObjectsOfType<T>(bool allowInheritance = false, bool includeMeIfFound = false) where T : GameObject {
@@ -186,5 +210,8 @@ namespace MemLib.Ffxiv.Managers {
                     yield return gameObject as T;
             }
         }
+
+        #endregion
+
     }
 }

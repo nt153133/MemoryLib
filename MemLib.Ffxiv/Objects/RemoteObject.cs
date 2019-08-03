@@ -9,7 +9,7 @@ namespace MemLib.Ffxiv.Objects {
 
         public virtual bool IsValid => BaseAddress != IntPtr.Zero;
 
-        internal RemoteObject(FfxivProcess process, IntPtr baseAddress) {
+        protected RemoteObject(FfxivProcess process, IntPtr baseAddress) {
             m_Process = process;
             BaseAddress = baseAddress;
         }

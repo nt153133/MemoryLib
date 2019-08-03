@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MemLib.Ffxiv;
+using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Objects;
 
 namespace TestApp {
@@ -8,9 +9,6 @@ namespace TestApp {
         private static void Test() {
             using (var ff = new FfxivProcess()) {
                 ff.GameObjects.Update();
-                foreach (var obj in ff.GameObjects.GetObjectsOfType<Character>(true, true)) {
-                    Print($"{obj}");
-                }
             }
         }
 

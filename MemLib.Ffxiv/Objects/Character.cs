@@ -17,8 +17,8 @@ namespace MemLib.Ffxiv.Objects {
         public uint MaxCP => (uint)m_Process.Read<short>(BaseAddress + m_Process.Offsets.Character.CP + 2);
         public float CurrentCPPercent => (float) CurrentCP / MaxCP * 100f;
 
-        public uint Level => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.ClassLevel);
-        public ClassJobType ClassJob => m_Process.Read<ClassJobType>(BaseAddress + m_Process.Offsets.Character.ClassJob);
+        public uint ClassLevel => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Character.ClassLevel);
+        public ClassJobType CurrentJob => m_Process.Read<ClassJobType>(BaseAddress + m_Process.Offsets.Character.ClassJob);
 
         public uint OwnerId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.OwnerId);
 
@@ -29,22 +29,19 @@ namespace MemLib.Ffxiv.Objects {
             }
         }
 
+        public virtual uint CurrentTargetId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.TargetId);
+        public Character TargetCharacter => HasTarget ? m_Process.GameObjects.GetObjectByObjectId(CurrentTargetId) as Character : null;
+        public GameObject TargetGameObject => HasTarget ? m_Process.GameObjects.GetObjectByObjectId(CurrentTargetId) : null;
+
         public StatusFlags StatusFlags => m_Process.Read<StatusFlags>(BaseAddress + m_Process.Offsets.Character.Status);
         public bool InCombat => StatusFlags.HasFlag(StatusFlags.InCombat);
-        public bool IsNpc => NpcId > 0u;
-
-        public virtual uint CurrentTargetId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.TargetId);
-        public virtual Character TargetCharacter => m_Process.GameObjects.GetObjectByObjectId<Character>(CurrentTargetId);
-        public virtual GameObject TargetGameObject => m_Process.GameObjects.GetObjectByObjectId(CurrentTargetId);
-
+        
         public override uint CurrentHealth => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.Health);
         public override uint MaxHealth => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.Health + 4);
         public override float CurrentHealthPercent => (float) CurrentHealth / MaxHealth * 100f;
 
-        public bool IsDead => CurrentHealth <= 0 && MaxHealth > 0;
-        public bool IsAlive => !IsDead;
-
         public override uint NpcId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.NpcId);
+        public bool IsNpc => NpcId > 0u;
 
         private SpellCastInfo m_SpellCastInfo;
         public SpellCastInfo SpellCastInfo => m_SpellCastInfo ?? (m_SpellCastInfo = new SpellCastInfo(m_Process, BaseAddress + 0));
