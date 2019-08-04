@@ -13,10 +13,11 @@
   <Character>
     <Name>48</Name>
     <ObjectId>116</ObjectId>
+    <ObjectId2>120</ObjectId2>
     <NpcId>128</NpcId>
-    <NpcId2>6268</NpcId2>
+    <BNpcNameId>6268</BNpcNameId>
     <TargetId>488</TargetId>
-    <OwnerId>132</OwnerId>
+    <OwnerId>6284</OwnerId>
     <ObjectType>140</ObjectType>
     <Distance>146</Distance>
     <Location>160</Location>
@@ -36,6 +37,11 @@
     <Status>6409</Status>
     <MountId>6399</MountId>
     <Mount>6072</Mount>
+    <CastingSpellId>7252</CastingSpellId>
+    <CastingTargetId>7264</CastingTargetId>
+    <CurrentCastTime>7300</CurrentCastTime>
+    <CastTime>7304</CastTime>
+    <AuraList>6504</AuraList>
   </Character>
   <Item>
     <Slot>4</Slot>
@@ -49,4 +55,13 @@
     <DyeId>47</DyeId>
     <GlamourId>48</GlamourId>
   </Item>
+  <Target>
+    <CurrentTarget>8</CurrentTarget>
+    <MouseOverTarget>48</MouseOverTarget>
+    <FocusTarget>104</FocusTarget>
+    <PreviousTarget>128</PreviousTarget>
+    <CurrentTargetId>176</CurrentTargetId>
+    <NumTargetableObj>184</NumTargetableObj>
+    <TargetableObjList>192</TargetableObjList>
+  </Target>
 </Offsets>

@@ -96,7 +96,7 @@ namespace MemLib.Ffxiv.Managers {
             }
         }
 
-        private IEnumerable<GameObject> GetRawEntities() {
+        public IEnumerable<GameObject> GetRawEntities() {
             if (!m_Process.Read<IntPtr>(m_Process.Offsets.ObjectListPtr, out var ptrArray, MaxObjects))
                 yield break;
             foreach (var ptr in ptrArray.Where(p => p != IntPtr.Zero).Distinct()) {

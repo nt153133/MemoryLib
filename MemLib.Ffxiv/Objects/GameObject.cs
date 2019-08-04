@@ -7,6 +7,7 @@ namespace MemLib.Ffxiv.Objects {
     public class GameObject : RemoteObject, IEquatable<GameObject> {
         public GameObjectType Type => m_Process.Read<GameObjectType>(BaseAddress + m_Process.Offsets.Character.ObjectType);
         public virtual string Name => m_Process.ReadString(BaseAddress + m_Process.Offsets.Character.Name, 64);
+
         public virtual Vector3 Location => m_Process.Read<Vector3>(BaseAddress + m_Process.Offsets.Character.Location);
         public float X => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location);
         public float Y => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location + 4);
@@ -25,8 +26,10 @@ namespace MemLib.Ffxiv.Objects {
 
         private uint GetObjectId() {
             var id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId);
-            if (id == GameObjectManager.EmptyGameObject)
+            if (id == GameObjectManager.EmptyGameObject || id == 0u)
                 id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId2);
+            if (id == GameObjectManager.EmptyGameObject || id == 0u)
+                id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId3);
             return id;
         }
 
@@ -53,7 +56,7 @@ namespace MemLib.Ffxiv.Objects {
         #region Overrides of RemoteObject
 
         public override string ToString() {
-            return $"{Name} 0x{BaseAddress.ToInt64():X}";
+            return $"{Name}:0x{BaseAddress.ToInt64():X}";
         }
 
         #endregion

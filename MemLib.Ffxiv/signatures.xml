@@ -22,12 +22,22 @@
   </Signature>
   <Signature>
     <Key>Targeting</Key>
-    <Value>41bc000000e041bd01000000493bc47555488d0d</Value>
-    <Offset>20</Offset>
+    <Value>488B05********4885C07507488B05********C3</Value>
+    <Offset>3</Offset>
   </Signature>
   <Signature>
     <Key>Pet</Key>
     <Value>3B15********74**8915</Value>
     <Offset>2</Offset>
+  </Signature>
+  <Signature>
+    <Key>AttackerList</Key>
+    <Value>418BDF391D********0F8E********488D3D</Value>
+    <Offset>18</Offset>
+  </Signature>
+  <Signature>
+    <Key>AttackerCount</Key>
+    <Value>418BDF391D********0F8E********488D3D</Value>
+    <Offset>5</Offset>
   </Signature>
 </ArrayOfSignature>

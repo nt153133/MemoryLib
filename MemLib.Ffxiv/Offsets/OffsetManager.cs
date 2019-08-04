@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 using MemLib.Ffxiv.Offsets.Structs;
 
@@ -20,12 +21,14 @@ namespace MemLib.Ffxiv.Offsets {
         public IntPtr PetPtr => m_ResolvedSignatures["Pet"];
         public IntPtr AttackerListPtr => m_ResolvedSignatures["AttackerList"];
         public IntPtr AttackerCountPtr => m_ResolvedSignatures["AttackerCount"];
+        public IntPtr PartyListPtr => m_ResolvedSignatures["PartyList"];
 
         private Offsets m_Offsets = new Offsets();
         public CharacterOffsets Character => m_Offsets.Character;
         public PlayerInfoOffsets PlayerInfo => m_Offsets.PlayerInfo;
         public ItemOffsets Item => m_Offsets.Item;
         public TargetOffsets Target => m_Offsets.Target;
+        public PartyOffsets Party => m_Offsets.Party;
 
         internal OffsetManager(FfxivProcess process) {
             m_Process = process;
@@ -44,6 +47,7 @@ namespace MemLib.Ffxiv.Offsets {
                 new Signature{Key = "Pet", Value = "3B15********74**8915", Offset = 2},
                 new Signature{Key = "AttackerList", Value = "418BDF391D********0F8E********488D3D", Offset = 18},
                 new Signature{Key = "AttackerCount", Value = "418BDF391D********0F8E********488D3D", Offset = 5},
+                new Signature{Key = "PartyList", Value = "488D7C242066660F1F840000000000488B17488D0D", Offset = 21, PointerPath = new []{0x2F0}},
             };
         }
 
@@ -69,7 +73,8 @@ namespace MemLib.Ffxiv.Offsets {
             foreach (var sig in m_Signatures) {
                 var sigStr = $"Search {sig.Value} Add {sig.Offset:X} TraceRelative";
                 if (sig.PointerPath != null && sig.PointerPath.Length > 0) {
-                    foreach (var offset in sig.PointerPath) {
+                    sigStr += $" Add {sig.PointerPath.FirstOrDefault():X}";
+                    foreach (var offset in sig.PointerPath.Skip(1)) {
                         sigStr += $" Add {offset:X} Read64";
                     }
                 }
