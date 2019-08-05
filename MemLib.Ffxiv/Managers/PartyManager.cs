@@ -9,6 +9,26 @@ namespace MemLib.Ffxiv.Managers {
         private readonly FfxivProcess m_Process;
         private readonly ConcurrentDictionary<uint, PartyMember> m_CachedEntities = new ConcurrentDictionary<uint, PartyMember>();
         public IEnumerable<PartyMember> AllMembers => m_CachedEntities.Values;
+        public bool IsInParty => NumMembers > 0u;
+        public uint NumMembers => m_Process.Read<byte>(m_Process.Offsets.PartyCountPtr);
+        public PartyMember PartyLeader => null;
+        public bool IsPartyLeader => NumMembers > 0u && PartyLeader.IsMe;
+        public ulong PartyId => 0ul;
+        internal int PartyLeaderIndex => 0;
+
+        public List<PartyMember> RawMembers {
+            get {
+                var list = new List<PartyMember>();
+                var count = NumMembers;
+                for (var i = 0; i < count; i++) {
+                    var addr = m_Process.Offsets.PartyListPtr + i * m_Process.Offsets.Party.MemberObjSize;
+                    var member = new PartyMember(m_Process, addr, i);
+                    if (member.IsValid)
+                        list.Add(member);
+                }
+                return list;
+            }
+        }
 
         public PartyManager(FfxivProcess process) {
             m_Process = process;
@@ -34,19 +54,6 @@ namespace MemLib.Ffxiv.Managers {
             var invalidObjKeys = m_CachedEntities.Where(kv => kv.Value.BaseAddress == IntPtr.Zero).Select(kv => kv.Key).ToList();
             foreach (var invalidKey in invalidObjKeys) {
                 m_CachedEntities.TryRemove(invalidKey, out _);
-            }
-        }
-
-        public List<PartyMember> RawMembers {
-            get {
-                var list = new List<PartyMember>();
-                for (var i = 0; i < 8; i++) {
-                    var addr = m_Process.Offsets.PartyListPtr + i * m_Process.Offsets.Party.MemberObjSize;
-                    var member = new PartyMember(m_Process, addr, i);
-                    if(member.IsValid)
-                        list.Add(member);
-                }
-                return list;
             }
         }
     }

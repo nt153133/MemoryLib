@@ -17,8 +17,8 @@ namespace MemLib.Ffxiv.Objects {
         public virtual uint MaxMana => m_Process.Read<ushort>(BaseAddress + m_Process.Offsets.Party.Mana + 2);
         public virtual string Name => m_Process.ReadString(BaseAddress + m_Process.Offsets.Party.Name, 64);
         public virtual uint ObjectId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Party.ObjectId);
+        public virtual ulong PartyObjectId => 0ul;
         public virtual bool IsPartyLeader { get; }
-        public virtual ulong PartyObjectId { get; }
         public virtual bool IsXRealm => false;
 
         internal PartyMember(FfxivProcess process, IntPtr baseAddress, int index) : base(process, baseAddress) {

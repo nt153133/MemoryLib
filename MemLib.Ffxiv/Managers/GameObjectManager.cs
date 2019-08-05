@@ -102,20 +102,20 @@ namespace MemLib.Ffxiv.Managers {
             foreach (var ptr in ptrArray.Where(p => p != IntPtr.Zero).Distinct()) {
                 var type = (GameObjectType)m_Process.Read<byte>(ptr + m_Process.Offsets.Character.ObjectType);
                 switch (type) {
-                    case GameObjectType.Pc:
+                    case GameObjectType.Player:
                     case GameObjectType.BattleNpc:
                         yield return new BattleCharacter(m_Process, ptr);
                         break;
                     case GameObjectType.Minion:
                         yield return new Minion(m_Process, ptr);
                         break;
-                    case GameObjectType.AetheryteObject:
+                    case GameObjectType.Aetheryte:
                         yield return new Aetheryte(m_Process, ptr);
                         break;
                     case GameObjectType.Treasure:
                         yield return new Treasure(m_Process, ptr);
                         break;
-                    case GameObjectType.EventObject:
+                    case GameObjectType.EventObj:
                     case GameObjectType.EventNpc:
                         yield return new EventObject(m_Process, ptr);
                         break;
@@ -126,7 +126,7 @@ namespace MemLib.Ffxiv.Managers {
                     case GameObjectType.Retainer:
                         yield return new Character(m_Process, ptr);
                         break;
-                    case GameObjectType.HousingEventObject:
+                    case GameObjectType.Housing:
                         yield return new HousingObject(m_Process, ptr);
                         break;
                     default:
