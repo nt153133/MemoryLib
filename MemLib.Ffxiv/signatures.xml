@@ -31,6 +31,16 @@
     <Offset>2</Offset>
   </Signature>
   <Signature>
+    <Key>PetStats</Key>
+    <Value>488D0D********E8********83BD********00488BC3448825</Value>
+    <Offset>3</Offset>
+  </Signature>
+  <Signature>
+    <Key>PetInfo</Key>
+    <Value>488D0D********E8********83BD********00488BC3448825</Value>
+    <Offset>25</Offset>
+  </Signature>
+  <Signature>
     <Key>AttackerList</Key>
     <Value>418BDF391D********0F8E********488D3D</Value>
     <Offset>18</Offset>
@@ -39,5 +49,18 @@
     <Key>AttackerCount</Key>
     <Value>418BDF391D********0F8E********488D3D</Value>
     <Offset>5</Offset>
+  </Signature>
+  <Signature>
+    <Key>PartyList</Key>
+    <Value>488D7C242066660F1F840000000000488B17488D0D</Value>
+    <Offset>21</Offset>
+    <PointerPath>
+      <int>752</int>
+    </PointerPath>
+  </Signature>
+  <Signature>
+    <Key>PartyCount</Key>
+    <Value>803D********00751D803D********017714488B05</Value>
+    <Offset>2</Offset>
   </Signature>
 </ArrayOfSignature>

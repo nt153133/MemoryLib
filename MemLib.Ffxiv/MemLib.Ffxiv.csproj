@@ -45,11 +45,16 @@
     <Compile Include="Enumerations\GatheringType.cs" />
     <Compile Include="Enumerations\InventoryBagId.cs" />
     <Compile Include="Enumerations\MateriaType.cs" />
+    <Compile Include="Enumerations\PetMode.cs" />
+    <Compile Include="Enumerations\PetMovement.cs" />
+    <Compile Include="Enumerations\PetStance.cs" />
+    <Compile Include="Enumerations\PetType.cs" />
     <Compile Include="Enumerations\PlayerIcon.cs" />
     <Compile Include="Enumerations\StatusFlags.cs" />
     <Compile Include="Enumerations\World.cs" />
     <Compile Include="FfxivProcess.cs" />
     <Compile Include="Managers\PartyManager.cs" />
+    <Compile Include="Managers\PetManager.cs" />
     <Compile Include="Objects\Aura.cs" />
     <Compile Include="Objects\Auras.cs" />
     <Compile Include="Objects\PartyMember.cs" />

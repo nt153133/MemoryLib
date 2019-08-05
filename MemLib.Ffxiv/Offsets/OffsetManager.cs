@@ -19,6 +19,8 @@ namespace MemLib.Ffxiv.Offsets {
         public IntPtr InventoryPtr => m_ResolvedSignatures["Inventory"];
         public IntPtr InventoryIdsPtr => m_ResolvedSignatures["InventoryIds"];
         public IntPtr PetPtr => m_ResolvedSignatures["Pet"];
+        public IntPtr PetStatsPtr => m_ResolvedSignatures["PetStats"];
+        public IntPtr PetInfoPtr => m_ResolvedSignatures["PetInfo"];
         public IntPtr AttackerListPtr => m_ResolvedSignatures["AttackerList"];
         public IntPtr AttackerCountPtr => m_ResolvedSignatures["AttackerCount"];
         public IntPtr PartyListPtr => m_ResolvedSignatures["PartyList"];
@@ -46,6 +48,8 @@ namespace MemLib.Ffxiv.Offsets {
                 new Signature{Key = "InventoryIds", Value = "8BD94D85C974**33C94C8D15", Offset = 12},
                 new Signature{Key = "Targeting", Value = "488B05********4885C07507488B05********C3", Offset = 3},
                 new Signature{Key = "Pet", Value = "3B15********74**8915", Offset = 2},
+                new Signature{Key = "PetStats", Value = "488D0D********E8********83BD********00488BC3448825", Offset = 3},
+                new Signature{Key = "PetInfo", Value = "488D0D********E8********83BD********00488BC3448825", Offset = 25},
                 new Signature{Key = "AttackerList", Value = "418BDF391D********0F8E********488D3D", Offset = 18},
                 new Signature{Key = "AttackerCount", Value = "418BDF391D********0F8E********488D3D", Offset = 5},
                 new Signature{Key = "PartyList", Value = "488D7C242066660F1F840000000000488B17488D0D", Offset = 21, PointerPath = new []{0x2F0}},

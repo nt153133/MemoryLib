@@ -14,6 +14,7 @@
     <Name>48</Name>
     <ObjectId>116</ObjectId>
     <ObjectId2>120</ObjectId2>
+    <ObjectId3>136</ObjectId3>
     <NpcId>128</NpcId>
     <BNpcNameId>6268</BNpcNameId>
     <TargetId>488</TargetId>
@@ -64,4 +65,13 @@
     <NumTargetableObj>184</NumTargetableObj>
     <TargetableObjList>192</TargetableObjList>
   </Target>
+  <Party>
+    <MemberObjSize>912</MemberObjSize>
+    <ObjectId>24</ObjectId>
+    <Health>36</Health>
+    <Mana>44</Mana>
+    <Name>52</Name>
+    <ClassJob>117</ClassJob>
+    <Level>118</Level>
+  </Party>
 </Offsets>
