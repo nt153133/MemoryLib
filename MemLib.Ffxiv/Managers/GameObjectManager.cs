@@ -28,7 +28,6 @@ namespace MemLib.Ffxiv.Managers {
                 return m_LocalPlayer;
             }
         }
-
         public GameObject Target {
             get {
                 var addr = m_Process.Offsets.TargetingPtr + m_Process.Offsets.Target.CurrentTargetId;
@@ -39,7 +38,6 @@ namespace MemLib.Ffxiv.Managers {
                 return m_CachedEntities.TryGetValue(targetId, out var target) ? target : null;
             }
         }
-
         public BattleCharacter CurrentPet {
             get {
                 if (m_Process.Read<uint>(m_Process.Offsets.PetPtr, out var petId))
@@ -47,7 +45,9 @@ namespace MemLib.Ffxiv.Managers {
                 return null;
             }
         }
-
+        public IEnumerable<BattleCharacter> Monsters => GetObjectsByObjectType<BattleCharacter>(GameObjectType.BattleNpc);
+        public IEnumerable<BattleCharacter> Players => GetObjectsByObjectType<BattleCharacter>(GameObjectType.Player);
+        public IEnumerable<GameObject> Npcs => GetObjectsByObjectTypes(NpcTypes);
         public HashSet<BattleCharacter> Attackers { get; private set; } = new HashSet<BattleCharacter>();
 
         internal GameObjectManager(FfxivProcess process) {
@@ -96,7 +96,7 @@ namespace MemLib.Ffxiv.Managers {
             }
         }
 
-        public IEnumerable<GameObject> GetRawEntities() {
+        private IEnumerable<GameObject> GetRawEntities() {
             if (!m_Process.Read<IntPtr>(m_Process.Offsets.ObjectListPtr, out var ptrArray, MaxObjects))
                 yield break;
             foreach (var ptr in ptrArray.Where(p => p != IntPtr.Zero).Distinct()) {
@@ -139,7 +139,7 @@ namespace MemLib.Ffxiv.Managers {
         internal GameObject GetObjectByPtr(IntPtr ptr) {
             return GameObjects.FirstOrDefault(o => o.BaseAddress == ptr);
         }
-
+        
         #region ByName
 
         public GameObject GetObjectByName(string name, bool matchPartial = false) {
@@ -203,6 +203,18 @@ namespace MemLib.Ffxiv.Managers {
             return GameObjects.Where(o => o.Type == type).Select(o => o as T);
         }
 
+        public IEnumerable<GameObject> GetObjectsByObjectType(GameObjectType type) {
+            return GameObjects.Where(o => o.Type == type);
+        }
+
+        public IEnumerable<T> GetObjectsByObjectTypes<T>(params GameObjectType[] types) where T : GameObject {
+            return GameObjects.Where(o => types.Contains(o.Type)).Select(o => o as T);
+        }
+
+        public IEnumerable<GameObject> GetObjectsByObjectTypes(params GameObjectType[] types) {
+            return GameObjects.Where(o => types.Contains(o.Type));
+        }
+
         public IEnumerable<T> GetObjectsOfType<T>(bool allowInheritance = false, bool includeMeIfFound = false) where T : GameObject {
             var localPlayerId = LocalPlayer.ObjectId;
             foreach (var gameObject in GameObjects) {
@@ -214,5 +226,23 @@ namespace MemLib.Ffxiv.Managers {
 
         #endregion
 
+        #region ObjectTypeArrays
+
+        private static readonly GameObjectType[] NpcTypes = {
+            GameObjectType.Aetheryte,
+            GameObjectType.Area,
+            GameObjectType.CardStand,
+            GameObjectType.Cutscene,
+            GameObjectType.EventNpc,
+            GameObjectType.EventObj,
+            GameObjectType.GatheringPoint,
+            GameObjectType.Housing,
+            GameObjectType.Minion,
+            GameObjectType.Mount,
+            GameObjectType.Retainer,
+            GameObjectType.Treasure,
+        };
+
+        #endregion
     }
 }

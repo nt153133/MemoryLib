@@ -5,7 +5,7 @@ using System.Linq;
 using MemLib.Ffxiv.Objects;
 
 namespace MemLib.Ffxiv.Managers {
-    public class PartyManager {
+    public sealed class PartyManager {
         private readonly FfxivProcess m_Process;
         private readonly ConcurrentDictionary<uint, PartyMember> m_CachedEntities = new ConcurrentDictionary<uint, PartyMember>();
         public IEnumerable<PartyMember> AllMembers => m_CachedEntities.Values;

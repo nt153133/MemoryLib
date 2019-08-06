@@ -3,7 +3,7 @@ using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Objects;
 
 namespace MemLib.Ffxiv.Managers {
-    public class PetManager {
+    public sealed class PetManager {
         private readonly FfxivProcess m_Process;
 
         public PetMovement PetMovement => m_Process.Read<PetMovement>(m_Process.Offsets.PetInfoPtr);
@@ -21,7 +21,6 @@ namespace MemLib.Ffxiv.Managers {
                 return ptr == IntPtr.Zero ? GameObjectManager.EmptyGameObject : m_Process.Read<uint>(ptr);
             }
         }
-
         public BattleCharacter CurrentPet {
             get {
                 m_Process.GameObjects.Update();

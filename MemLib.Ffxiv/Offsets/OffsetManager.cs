@@ -25,6 +25,7 @@ namespace MemLib.Ffxiv.Offsets {
         public IntPtr AttackerCountPtr => m_ResolvedSignatures["AttackerCount"];
         public IntPtr PartyListPtr => m_ResolvedSignatures["PartyList"];
         public IntPtr PartyCountPtr => m_ResolvedSignatures["PartyCount"];
+        public IntPtr GuiManagerPtr => m_ResolvedSignatures["GuiManagerBase"];
 
         private Offsets m_Offsets = new Offsets();
         public CharacterOffsets Character => m_Offsets.Character;
@@ -53,7 +54,9 @@ namespace MemLib.Ffxiv.Offsets {
                 new Signature{Key = "AttackerList", Value = "418BDF391D********0F8E********488D3D", Offset = 18},
                 new Signature{Key = "AttackerCount", Value = "418BDF391D********0F8E********488D3D", Offset = 5},
                 new Signature{Key = "PartyList", Value = "488D7C242066660F1F840000000000488B17488D0D", Offset = 21, PointerPath = new []{0x2F0}},
-                new Signature{Key = "PartyCount", Value = "803D********00751D803D********017714488B05", Offset = 2},
+                new Signature{Key = "PartyCount", Value = "488D7C242066660F1F840000000000488B17488D0D", Offset = 21, PointerPath = new []{0x63DC}},
+                //new Signature{Key = "PartyCount", Value = "44383D********74**488B43**488D4B**33D2", Offset = 3},
+                new Signature{Key = "GuiManagerBase", Value = "4C8B05********897C24**40887C24**4D8D88", Offset = 3, PointerPath = new []{0x0, 0x20, 0x30}},
             };
         }
 
@@ -77,11 +80,11 @@ namespace MemLib.Ffxiv.Offsets {
         private void ResolveSignatures() {
             m_ResolvedSignatures = new Dictionary<string, IntPtr>(m_Signatures.Count);
             foreach (var sig in m_Signatures) {
-                var sigStr = $"Search {sig.Value} Add {sig.Offset:X} TraceRelative";
+                var sigStr = $"Search {sig.Value} Add {sig.Offset:X2} TraceRelative";
                 if (sig.PointerPath != null && sig.PointerPath.Length > 0) {
-                    sigStr += $" Add {sig.PointerPath.FirstOrDefault():X}";
+                    sigStr += $" Add {sig.PointerPath.FirstOrDefault():X2}";
                     foreach (var offset in sig.PointerPath.Skip(1)) {
-                        sigStr += $" Add {offset:X} Read64";
+                        sigStr += $" Read64 Add {offset:X2}";
                     }
                 }
                 var val = m_Process.Pattern.Find(sigStr);

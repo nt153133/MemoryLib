@@ -5,9 +5,15 @@ using MemLib.Ffxiv.Structures;
 
 namespace MemLib.Ffxiv.Objects {
     public class GameObject : RemoteObject, IEquatable<GameObject> {
+        private string m_Name;
+        public virtual string Name {
+            get {
+                if (!string.IsNullOrEmpty(m_Name))
+                    return m_Name;
+                return m_Name = m_Process.ReadString(BaseAddress + m_Process.Offsets.Character.Name, 64);
+            }
+        }
         public GameObjectType Type => m_Process.Read<GameObjectType>(BaseAddress + m_Process.Offsets.Character.ObjectType);
-        public virtual string Name => m_Process.ReadString(BaseAddress + m_Process.Offsets.Character.Name, 64);
-
         public virtual Vector3 Location => m_Process.Read<Vector3>(BaseAddress + m_Process.Offsets.Character.Location);
         public float X => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location);
         public float Y => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location + 4);

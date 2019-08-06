@@ -19,5 +19,11 @@ namespace MemLib.Ffxiv {
         public LocalPlayer Player => GameObjects.LocalPlayer;
         
         public FfxivProcess() : base(FindProcess("ffxiv_dx11")){}
+
+        public void Update() {
+            Native?.Refresh();
+            GameObjects?.Update();
+            Party?.Update();
+        }
     }
 }

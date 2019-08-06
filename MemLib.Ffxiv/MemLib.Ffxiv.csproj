@@ -73,6 +73,7 @@
     <Compile Include="Objects\LocalPlayer.cs" />
     <Compile Include="Objects\Minion.cs" />
     <Compile Include="Objects\RemoteObject.cs" />
+    <Compile Include="Offsets\Structs\GuiOffsets.cs" />
     <Compile Include="Offsets\Structs\PartyOffsets.cs" />
     <Compile Include="Offsets\Structs\TargetOffsets.cs" />
     <Compile Include="Structures\AuraData.cs" />
