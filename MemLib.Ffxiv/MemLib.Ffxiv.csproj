@@ -95,6 +95,8 @@
     <Compile Include="XivApi\Models\Character\CharacterResult.cs" />
     <Compile Include="XivApi\Models\Character\CharacterSearchResult.cs" />
     <Compile Include="XivApi\Models\Character\ClassJobResult.cs" />
+    <Compile Include="XivApi\Models\Item\ItemResult.cs" />
+    <Compile Include="XivApi\Models\Item\ItemSearchResult.cs" />
     <Compile Include="XivApi\Models\Search\PaginationResult.cs" />
     <Compile Include="XivApi\Models\Search\SearchResult.cs" />
     <Compile Include="XivApi\XivApiClient.cs" />
