@@ -1,7 +1,7 @@
 ﻿namespace MemLib.Ffxiv.Offsets.Structs {
-    public class GuiOffsets {
+    internal class GuiOffsets {
         public int ContainerSize { get; set; } = 0x808;
         public int ContainerChildCount { get; set; } = 0x808;
-        public int UiElementName { get; set; } = 0x8;
+        public int ElementName { get; set; } = 0x8;
     }
 }
