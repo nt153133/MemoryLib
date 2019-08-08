@@ -9,6 +9,7 @@ namespace MemLib.Ffxiv.Offsets {
         public ItemOffsets Item { get; set; } = new ItemOffsets();
         public TargetOffsets Target { get; set; } = new TargetOffsets();
         public PartyOffsets Party { get; set; } = new PartyOffsets();
+        public MapOffsets Map { get; set; } = new MapOffsets();
 
         #region Overrides of Object
 

@@ -25,6 +25,7 @@ namespace MemLib.Ffxiv.Offsets {
         public IntPtr AttackerCountPtr => m_ResolvedSignatures["AttackerCount"];
         public IntPtr PartyListPtr => m_ResolvedSignatures["PartyList"];
         public IntPtr PartyCountPtr => m_ResolvedSignatures["PartyCount"];
+        public IntPtr MapInfoPtr => m_ResolvedSignatures["MapInfo"];
 
         private Offsets m_Offsets = new Offsets();
         public CharacterOffsets Character => m_Offsets.Character;
@@ -32,6 +33,7 @@ namespace MemLib.Ffxiv.Offsets {
         public ItemOffsets Item => m_Offsets.Item;
         public TargetOffsets Target => m_Offsets.Target;
         public PartyOffsets Party => m_Offsets.Party;
+        public MapOffsets Map => m_Offsets.Map;
 
         internal OffsetManager(FfxivProcess process) {
             m_Process = process;
@@ -54,6 +56,8 @@ namespace MemLib.Ffxiv.Offsets {
                 new Signature{Key = "AttackerCount", Value = "418BDF391D********0F8E********488D3D", Offset = 5},
                 new Signature{Key = "PartyList", Value = "488D7C242066660F1F840000000000488B17488D0D", Offset = 21, PointerPath = new []{0x2F0}},
                 new Signature{Key = "PartyCount", Value = "488D7C242066660F1F840000000000488B17488D0D", Offset = 21, PointerPath = new []{0x63DC}},
+                new Signature{Key = "MapInfo", Value = "8B15********33C085D274**4C8D05", Offset = 2, PointerPath = new []{0x2C}},
+                new Signature{Key = "SanctuaryFlag", Value = "0FB615********33C084C90F45C2C3", Offset = 3},
                 //new Signature{Key = "PartyCount", Value = "44383D********74**488B43**488D4B**33D2", Offset = 3},
                 //?? new Signature{Key = "GuiManagerBase", Value = "4C8B05********897C24**40887C24**4D8D88", Offset = 3, PointerPath = new []{0x0, 0x20, 0x30}},
             };

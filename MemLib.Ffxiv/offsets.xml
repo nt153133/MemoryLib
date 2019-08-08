@@ -74,4 +74,10 @@
     <ClassJob>117</ClassJob>
     <Level>118</Level>
   </Party>
+  <Map>
+    <PlaceId>32</PlaceId>
+    <MapId>34</MapId>
+    <MapFileId>60</MapFileId>
+    <MapFilePath>65</MapFilePath>
+  </Map>
 </Offsets>

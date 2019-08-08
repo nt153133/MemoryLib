@@ -56,6 +56,7 @@
     <Compile Include="FfxivProcess.cs" />
     <Compile Include="Managers\PartyManager.cs" />
     <Compile Include="Managers\PetManager.cs" />
+    <Compile Include="Managers\WorldManager.cs" />
     <Compile Include="Objects\Aura.cs" />
     <Compile Include="Objects\Auras.cs" />
     <Compile Include="Objects\PartyMember.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Objects\Minion.cs" />
     <Compile Include="Objects\RemoteObject.cs" />
     <Compile Include="Offsets\Structs\GuiOffsets.cs" />
+    <Compile Include="Offsets\Structs\MapOffsets.cs" />
     <Compile Include="Offsets\Structs\PartyOffsets.cs" />
     <Compile Include="Offsets\Structs\TargetOffsets.cs" />
     <Compile Include="Structures\AuraData.cs" />
