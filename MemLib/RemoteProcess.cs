@@ -206,6 +206,7 @@ namespace MemLib {
 
         public virtual void Dispose() {
             ((IDisposable)m_Memory)?.Dispose();
+            Native?.Dispose();
             if(!Handle.IsClosed)
                 Handle.Close();
             GC.SuppressFinalize(this);

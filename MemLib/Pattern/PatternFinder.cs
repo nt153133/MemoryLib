@@ -32,8 +32,8 @@ namespace MemLib.Pattern {
 
         public IntPtr Find(string pattern) {
             var results = FindMany(pattern, true);
-            if(results.Count == 0)
-                throw new ArgumentException("Pattern not found.", nameof(pattern));
+            if(results == null || results.Count == 0)
+                return IntPtr.Zero;
             return results[0];
         }
 
@@ -78,7 +78,7 @@ namespace MemLib.Pattern {
                         throw new ArgumentException("Empty 'Search' token found.", nameof(pattern));
                     results = FindMany(intPattern.ToArray(), 0, matchFirstOnly);
                     if (results.Count == 0)
-                        return null;
+                        return results;
                     for (var i = 0; i < results.Count; i++)
                         results[i] = new IntPtr(BaseAddress.ToInt64() + results[i].ToInt64());
                 } else if (text == "Add") {
