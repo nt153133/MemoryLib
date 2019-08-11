@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Numerics;
 using MemLib.Ffxiv.Enumerations;
 using MemLib.Ffxiv.Managers;
-using MemLib.Ffxiv.Structures;
 
 namespace MemLib.Ffxiv.Objects {
     public class GameObject : RemoteObject, IEquatable<GameObject> {
@@ -10,59 +10,60 @@ namespace MemLib.Ffxiv.Objects {
             get {
                 if (!string.IsNullOrEmpty(m_Name))
                     return m_Name;
-                return m_Name = m_Process.ReadString(BaseAddress + m_Process.Offsets.Character.Name, 64);
+                return m_Name = Ffxiv.Memory.ReadString(BaseAddress + Ffxiv.Offsets.CharacterOffsets.Name, 64);
             }
         }
-        public GameObjectType Type => m_Process.Read<GameObjectType>(BaseAddress + m_Process.Offsets.Character.ObjectType);
-        public virtual Vector3 Location => m_Process.Read<Vector3>(BaseAddress + m_Process.Offsets.Character.Location);
-        public float X => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location);
-        public float Y => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location + 4);
-        public float Z => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Character.Location + 8);
+        public GameObjectType Type => Ffxiv.Memory.Read<GameObjectType>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.ObjectType);
+
+        public virtual Vector3 Location => Ffxiv.Memory.Read<Vector3>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.Location);
+        public float X => Ffxiv.Memory.Read<float>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.Location);
+        public float Y => Ffxiv.Memory.Read<float>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.Location + 4);
+        public float Z => Ffxiv.Memory.Read<float>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.Location + 8);
         public virtual uint CurrentHealth => 0u;
         public virtual uint MaxHealth => 0u;
         public virtual float CurrentHealthPercent => 0f;
         public virtual uint NpcId => 0u;
         public override bool IsValid => base.IsValid && GetObjectId() == ObjectId;
-        public bool IsMe => ObjectId == m_Process.GameObjects.LocalPlayer.ObjectId;
+        public bool IsMe => ObjectId == Ffxiv.Objects.LocalPlayer.ObjectId;
         public uint ObjectId { get; }
 
-        internal GameObject(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) {
+        internal GameObject(IntPtr baseAddress) : base(baseAddress) {
             ObjectId = GetObjectId();
         }
 
         private uint GetObjectId() {
-            var id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId);
+            var id = Ffxiv.Memory.Read<uint>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.ObjectId);
             if (id == GameObjectManager.EmptyGameObject || id == 0u)
-                id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId2);
+                id = Ffxiv.Memory.Read<uint>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.ObjectId2);
             if (id == GameObjectManager.EmptyGameObject || id == 0u)
-                id = m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Character.ObjectId3);
+                id = Ffxiv.Memory.Read<uint>(BaseAddress + Ffxiv.Offsets.CharacterOffsets.ObjectId3);
             return id;
         }
 
         public float Distance() {
-            return Distance(m_Process.GameObjects.LocalPlayer);
+            return Distance(Ffxiv.Objects.LocalPlayer);
         }
 
         public float Distance(Vector3 vector) {
-            return Location.Distance(vector);
+            return Vector3.Distance(Location, vector);
         }
 
         public float Distance(GameObject gameObject) {
-            return Location.Distance(gameObject.Location);
+            return Vector3.Distance(Location, gameObject.Location);
         }
 
         public float DistanceSqr() {
-            return Location.DistanceSquared(m_Process.GameObjects.LocalPlayer.Location);
+            return Vector3.DistanceSquared(Location, Ffxiv.Objects.LocalPlayer.Location);
         }
 
         public float DistanceSqr(Vector3 vector) {
-            return Location.DistanceSquared(vector);
+            return Vector3.DistanceSquared(Location, vector);
         }
 
         #region Overrides of RemoteObject
 
         public override string ToString() {
-            return $"{Name}:0x{BaseAddress.ToInt64():X}";
+            return $"0x{BaseAddress.ToInt64():X8}:{Name}";
         }
 
         #endregion
@@ -78,13 +79,22 @@ namespace MemLib.Ffxiv.Objects {
         public override bool Equals(object obj) {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((GameObject) obj);
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((GameObject) obj);
         }
 
         public override int GetHashCode() {
             unchecked {
                 return (base.GetHashCode() * 397) ^ (int) ObjectId;
             }
+        }
+
+        public static bool operator ==(GameObject left, GameObject right) {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(GameObject left, GameObject right) {
+            return !Equals(left, right);
         }
 
         #endregion

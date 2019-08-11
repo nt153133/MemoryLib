@@ -1,9 +1,7 @@
 ﻿using System;
-using MemLib.Ffxiv.Structures;
 
 namespace MemLib.Ffxiv.Objects {
     public class Aura {
-        private readonly FfxivProcess m_Process;
         private readonly AuraData m_Data;
         public int Index { get; }
 
@@ -12,10 +10,9 @@ namespace MemLib.Ffxiv.Objects {
         public float TimeLeft => m_Data.TimeLeft;
         public TimeSpan TimespanLeft => TimeSpan.FromSeconds(m_Data.TimeLeft);
         public uint CasterId => m_Data.CasterId;
-        public GameObject Caster => m_Process.GameObjects.GetObjectByObjectId(m_Data.CasterId);
+        public GameObject Caster => Ffxiv.Objects.GetObjectByObjectId(m_Data.CasterId);
 
-        internal Aura(FfxivProcess process, AuraData data, int index) {
-            m_Process = process;
+        internal Aura(AuraData data, int index) {
             m_Data = data;
             Index = index;
         }

@@ -7,7 +7,6 @@ using MemLib.Ffxiv.Objects;
 
 namespace MemLib.Ffxiv.Managers {
     public sealed class GameObjectManager {
-        private readonly FfxivProcess m_Process;
         private readonly ConcurrentDictionary<uint, GameObject> m_CachedEntities = new ConcurrentDictionary<uint, GameObject>();
 
         public const int MaxObjects = 424;
@@ -19,20 +18,20 @@ namespace MemLib.Ffxiv.Managers {
         private LocalPlayer m_LocalPlayer;
         public LocalPlayer LocalPlayer {
             get {
-                if (!m_Process.Read<IntPtr>(m_Process.Offsets.ObjectListPtr, out var pointer) || pointer == IntPtr.Zero)
+                if (!Ffxiv.Memory.Read<IntPtr>(Ffxiv.Offsets.ObjectList, out var pointer) || pointer == IntPtr.Zero)
                     return null;
                 if (m_LocalPlayer != null && m_LocalPlayerPtr == pointer)
                     return m_LocalPlayer;
                 m_LocalPlayerPtr = pointer;
-                m_LocalPlayer = new LocalPlayer(m_Process, pointer);
+                m_LocalPlayer = new LocalPlayer(pointer);
                 return m_LocalPlayer;
             }
         }
         public GameObject Target {
             get {
-                var addr = m_Process.Offsets.TargetingPtr + m_Process.Offsets.Target.CurrentTargetId;
-                if (!m_Process.Read<uint>(addr, out var targetId) 
-                    || targetId == 0 
+                var addr = Ffxiv.Offsets.Targeting + Ffxiv.Offsets.TargetOffsets.CurrentTargetId;
+                if (!Ffxiv.Memory.Read<uint>(addr, out var targetId)
+                    || targetId == 0
                     || targetId == EmptyGameObject)
                     return null;
                 return m_CachedEntities.TryGetValue(targetId, out var target) ? target : null;
@@ -40,7 +39,7 @@ namespace MemLib.Ffxiv.Managers {
         }
         public BattleCharacter CurrentPet {
             get {
-                if (m_Process.Read<uint>(m_Process.Offsets.PetPtr, out var petId))
+                if (Ffxiv.Memory.Read<uint>(Ffxiv.Offsets.Pet, out var petId))
                     return GetObjectByObjectId<BattleCharacter>(petId);
                 return null;
             }
@@ -49,38 +48,36 @@ namespace MemLib.Ffxiv.Managers {
         public IEnumerable<BattleCharacter> Players => GetObjectsByObjectType<BattleCharacter>(GameObjectType.Player);
         public IEnumerable<GameObject> Npcs => GetObjectsByObjectTypes(NpcTypes);
         public HashSet<BattleCharacter> Attackers { get; private set; } = new HashSet<BattleCharacter>();
-
-        internal GameObjectManager(FfxivProcess process) {
-            m_Process = process;
-        }
-
+        
         public void Clear() {
             m_CachedEntities.Clear();
         }
 
         public void Update() {
-            foreach (var gameObject in GameObjects) {
+            if (Ffxiv.Memory == null) return;
+            foreach (var gameObject in m_CachedEntities.Values) {
                 gameObject.UpdatePointer(IntPtr.Zero);
             }
 
             Attackers = new HashSet<BattleCharacter>();
-            var attackersCount = m_Process.Read<int>(m_Process.Offsets.AttackerCountPtr);
-            var attackerIds = new HashSet<uint>(attackersCount);
-            for (var i = 0; i < attackersCount; i++) {
-                var id = m_Process.Read<uint>(m_Process.Offsets.AttackerListPtr + i * 0x48);
-                if (id > 0 && id != EmptyGameObject)
-                    attackerIds.Add(id);
+            var attackerIds = new HashSet<uint>();
+            if (Ffxiv.Memory.Read<int>(Ffxiv.Offsets.AttackerCount, out var attackersCount) && attackersCount > 0) {
+                for (var i = 0; i < attackersCount; i++) {
+                    var id = Ffxiv.Memory.Read<uint>(Ffxiv.Offsets.AttackerList + i * 0x48);
+                    if (id > 0 && id != EmptyGameObject)
+                        attackerIds.Add(id);
+                }
             }
 
             foreach (var entity in GetRawEntities()) {
                 if (entity == null || entity.BaseAddress == IntPtr.Zero) continue;
                 var objId = entity.ObjectId;
-                if(objId == 0 || objId == EmptyGameObject) continue;
+                if (objId == 0 || objId == EmptyGameObject) continue;
 
                 if (m_CachedEntities.TryGetValue(objId, out var gameObject)) {
                     gameObject.UpdatePointer(entity.BaseAddress);
                     if (!attackerIds.Contains(objId)) continue;
-                    if(gameObject is BattleCharacter attacker)
+                    if (gameObject is BattleCharacter attacker)
                         Attackers.Add(attacker);
                 } else {
                     m_CachedEntities.GetOrAdd(objId, entity);
@@ -97,40 +94,40 @@ namespace MemLib.Ffxiv.Managers {
         }
 
         private IEnumerable<GameObject> GetRawEntities() {
-            if (!m_Process.Read<IntPtr>(m_Process.Offsets.ObjectListPtr, out var ptrArray, MaxObjects))
+            if (!Ffxiv.Memory.Read<IntPtr>(Ffxiv.Offsets.ObjectList, out var ptrArray, MaxObjects))
                 yield break;
             foreach (var ptr in ptrArray.Where(p => p != IntPtr.Zero).Distinct()) {
-                var type = (GameObjectType)m_Process.Read<byte>(ptr + m_Process.Offsets.Character.ObjectType);
+                var type = (GameObjectType)Ffxiv.Memory.Read<byte>(ptr + Ffxiv.Offsets.CharacterOffsets.ObjectType);
                 switch (type) {
                     case GameObjectType.Player:
                     case GameObjectType.BattleNpc:
-                        yield return new BattleCharacter(m_Process, ptr);
+                        yield return new BattleCharacter(ptr);
                         break;
-                    case GameObjectType.Minion:
-                        yield return new Minion(m_Process, ptr);
-                        break;
-                    case GameObjectType.Aetheryte:
-                        yield return new Aetheryte(m_Process, ptr);
-                        break;
-                    case GameObjectType.Treasure:
-                        yield return new Treasure(m_Process, ptr);
-                        break;
-                    case GameObjectType.EventObj:
-                    case GameObjectType.EventNpc:
-                        yield return new EventObject(m_Process, ptr);
-                        break;
-                    case GameObjectType.GatheringPoint:
-                        yield return new GatheringPointObject(m_Process, ptr);
-                        break;
-                    case GameObjectType.Mount:
-                    case GameObjectType.Retainer:
-                        yield return new Character(m_Process, ptr);
-                        break;
-                    case GameObjectType.Housing:
-                        yield return new HousingObject(m_Process, ptr);
-                        break;
+                    //case GameObjectType.Minion:
+                    //    yield return new Minion(m_Process, ptr);
+                    //    break;
+                    //case GameObjectType.Aetheryte:
+                    //    yield return new Aetheryte(m_Process, ptr);
+                    //    break;
+                    //case GameObjectType.Treasure:
+                    //    yield return new Treasure(m_Process, ptr);
+                    //    break;
+                    //case GameObjectType.EventObj:
+                    //case GameObjectType.EventNpc:
+                    //    yield return new EventObject(m_Process, ptr);
+                    //    break;
+                    //case GameObjectType.GatheringPoint:
+                    //    yield return new GatheringPointObject(m_Process, ptr);
+                    //    break;
+                    //case GameObjectType.Mount:
+                    //case GameObjectType.Retainer:
+                    //    yield return new Character(m_Process, ptr);
+                    //    break;
+                    //case GameObjectType.Housing:
+                    //    yield return new HousingObject(m_Process, ptr);
+                    //    break;
                     default:
-                        yield return new GameObject(m_Process, ptr);
+                        yield return new GameObject(ptr);
                         break;
                 }
             }
@@ -139,7 +136,7 @@ namespace MemLib.Ffxiv.Managers {
         internal GameObject GetObjectByPtr(IntPtr ptr) {
             return GameObjects.FirstOrDefault(o => o.BaseAddress == ptr);
         }
-        
+
         #region ByName
 
         public GameObject GetObjectByName(string name, bool matchPartial = false) {

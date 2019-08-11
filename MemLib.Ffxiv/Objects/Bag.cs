@@ -8,9 +8,9 @@ namespace MemLib.Ffxiv.Objects {
     public class Bag : RemoteObject, IEnumerable<BagSlot> {
         private List<BagSlot> m_BagSlots = new List<BagSlot>();
 
-        public uint BagId => m_Process.Read<uint>(BaseAddress + 8);
+        public uint BagId => Ffxiv.Memory.Read<uint>(BaseAddress + 8);
         public InventoryBagId InventoryBagId => (InventoryBagId) BagId;
-        public uint TotalSlots => m_Process.Read<uint>(BaseAddress + 12);
+        public uint TotalSlots => Ffxiv.Memory.Read<uint>(BaseAddress + 12);
         public uint FreeSlots => TotalSlots - UsedSlots;
         public uint UsedSlots => (uint) m_BagSlots.Sum(s => s.RawItemId == 0 ? 0 : 1);
         public List<BagSlot> FilledSlots => m_BagSlots.Where(s => s.IsFilled).ToList();
@@ -21,11 +21,11 @@ namespace MemLib.Ffxiv.Objects {
         public BagSlot this[int i] => m_BagSlots[i];
         public BagSlot this[EquipmentSlot i] => m_BagSlots[(int) i];
 
-        internal Bag(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) {
-            var ptr = process.Read<IntPtr>(baseAddress);
+        internal Bag(IntPtr baseAddress) : base(baseAddress) {
+            var ptr = Ffxiv.Memory.Read<IntPtr>(baseAddress);
             var slots = TotalSlots;
             for (var i = 0; i < slots; i++) {
-                m_BagSlots.Add(new BagSlot(process, ptr + i * 56));
+                m_BagSlots.Add(new BagSlot(ptr + i * 56));
             }
             m_Valid = true;
         }

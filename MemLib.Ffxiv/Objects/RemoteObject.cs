@@ -3,14 +3,12 @@
 
 namespace MemLib.Ffxiv.Objects {
     public class RemoteObject : IEquatable<RemoteObject> {
-        protected readonly FfxivProcess m_Process;
         public IntPtr BaseAddress { get; private set; }
-        public IntPtr vTable => m_Process.Read<IntPtr>(BaseAddress);
+        public IntPtr vTable => Ffxiv.Memory.Read<IntPtr>(BaseAddress);
 
         public virtual bool IsValid => BaseAddress != IntPtr.Zero;
 
-        protected RemoteObject(FfxivProcess process, IntPtr baseAddress) {
-            m_Process = process;
+        protected RemoteObject(IntPtr baseAddress) {
             BaseAddress = baseAddress;
         }
 
@@ -21,7 +19,7 @@ namespace MemLib.Ffxiv.Objects {
         #region Overrides of Object
 
         public override string ToString() {
-            return $"0x{BaseAddress.ToInt64():X}";
+            return $"0x{BaseAddress.ToInt64():X8}";
         }
 
         #endregion
@@ -30,8 +28,7 @@ namespace MemLib.Ffxiv.Objects {
 
         public bool Equals(RemoteObject other) {
             if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return m_Process.Equals(other.m_Process) && BaseAddress.Equals(other.BaseAddress);
+            return ReferenceEquals(this, other) || BaseAddress.Equals(other.BaseAddress);
         }
 
         public override bool Equals(object obj) {
@@ -41,9 +38,16 @@ namespace MemLib.Ffxiv.Objects {
         }
 
         public override int GetHashCode() {
-            unchecked {
-                return (m_Process.GetHashCode() * 397) ^ BaseAddress.GetHashCode();
-            }
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
+            return BaseAddress.GetHashCode();
+        }
+
+        public static bool operator ==(RemoteObject left, RemoteObject right) {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(RemoteObject left, RemoteObject right) {
+            return !Equals(left, right);
         }
 
         #endregion

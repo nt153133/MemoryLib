@@ -6,11 +6,11 @@ using MemLib.Ffxiv.Objects;
 
 namespace MemLib.Ffxiv.Managers {
     public sealed class PartyManager {
-        private readonly FfxivProcess m_Process;
         private readonly ConcurrentDictionary<uint, PartyMember> m_CachedEntities = new ConcurrentDictionary<uint, PartyMember>();
         public IEnumerable<PartyMember> AllMembers => m_CachedEntities.Values;
+
         public bool IsInParty => NumMembers > 0u;
-        public uint NumMembers => m_Process.Read<byte>(m_Process.Offsets.PartyCountPtr);
+        public uint NumMembers => Ffxiv.Memory.Read<byte>(Ffxiv.Offsets.PartyCount);
         public PartyMember PartyLeader => null;
         public bool IsPartyLeader => NumMembers > 0u && PartyLeader.IsMe;
         public ulong PartyId => 0ul;
@@ -21,8 +21,8 @@ namespace MemLib.Ffxiv.Managers {
                 var list = new List<PartyMember>();
                 var count = NumMembers;
                 for (var i = 0; i < count; i++) {
-                    var addr = m_Process.Offsets.PartyListPtr + i * m_Process.Offsets.Party.MemberObjSize;
-                    var member = new PartyMember(m_Process, addr, i);
+                    var addr = Ffxiv.Offsets.PartyList + i * Ffxiv.Offsets.PartyOffsets.MemberObjSize;
+                    var member = new PartyMember(addr, i);
                     if (member.IsValid)
                         list.Add(member);
                 }
@@ -30,16 +30,15 @@ namespace MemLib.Ffxiv.Managers {
             }
         }
 
-        public PartyManager(FfxivProcess process) {
-            m_Process = process;
-        }
+        internal PartyManager() { }
 
         public void Clear() {
             m_CachedEntities.Clear();
         }
 
         public void Update() {
-            foreach (var member in AllMembers) {
+            if (Ffxiv.Memory == null) return;
+            foreach (var member in m_CachedEntities.Values) {
                 member.UpdatePointer(IntPtr.Zero);
             }
 

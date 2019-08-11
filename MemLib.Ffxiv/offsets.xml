@@ -1,16 +1,6 @@
 <?xml version="1.0"?>
-<Offsets xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <PlayerInfo>
-    <Name>1</Name>
-    <ObjectId>84</ObjectId>
-    <ClassJob>102</ClassJob>
-    <ClassLevel>104</ClassLevel>
-    <ClassLevelTable>106</ClassLevelTable>
-    <ClassExpTable>164</ClassExpTable>
-    <StatsTable>312</StatsTable>
-    <InspectedPlayer>1560</InspectedPlayer>
-  </PlayerInfo>
-  <Character>
+<FfxivOffsets xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CharacterOffsets>
     <Name>48</Name>
     <ObjectId>116</ObjectId>
     <ObjectId2>120</ObjectId2>
@@ -43,8 +33,8 @@
     <CurrentCastTime>7300</CurrentCastTime>
     <CastTime>7304</CastTime>
     <AuraList>6504</AuraList>
-  </Character>
-  <Item>
+  </CharacterOffsets>
+  <ItemOffsets>
     <Slot>4</Slot>
     <RawItemId>8</RawItemId>
     <Count>12</Count>
@@ -55,17 +45,14 @@
     <MateriaRanks>42</MateriaRanks>
     <DyeId>47</DyeId>
     <GlamourId>48</GlamourId>
-  </Item>
-  <Target>
-    <CurrentTarget>8</CurrentTarget>
-    <MouseOverTarget>48</MouseOverTarget>
-    <FocusTarget>104</FocusTarget>
-    <PreviousTarget>128</PreviousTarget>
-    <CurrentTargetId>176</CurrentTargetId>
-    <NumTargetableObj>184</NumTargetableObj>
-    <TargetableObjList>192</TargetableObjList>
-  </Target>
-  <Party>
+  </ItemOffsets>
+  <MapOffsets>
+    <PlaceId>32</PlaceId>
+    <MapId>34</MapId>
+    <MapFileId>60</MapFileId>
+    <MapFilePath>65</MapFilePath>
+  </MapOffsets>
+  <PartyOffsets>
     <MemberObjSize>912</MemberObjSize>
     <ObjectId>24</ObjectId>
     <Health>36</Health>
@@ -73,11 +60,105 @@
     <Name>52</Name>
     <ClassJob>117</ClassJob>
     <Level>118</Level>
-  </Party>
-  <Map>
-    <PlaceId>32</PlaceId>
-    <MapId>34</MapId>
-    <MapFileId>60</MapFileId>
-    <MapFilePath>65</MapFilePath>
-  </Map>
-</Offsets>
+  </PartyOffsets>
+  <TargetOffsets>
+    <CurrentTarget>8</CurrentTarget>
+    <MouseOverTarget>48</MouseOverTarget>
+    <FocusTarget>104</FocusTarget>
+    <PreviousTarget>128</PreviousTarget>
+    <CurrentTargetId>176</CurrentTargetId>
+    <NumTargetableObj>184</NumTargetableObj>
+    <TargetableObjList>192</TargetableObjList>
+  </TargetOffsets>
+  <PlayerOffsets>
+    <Name>1</Name>
+    <ObjectId>84</ObjectId>
+    <ClassJob>102</ClassJob>
+    <ClassLevel>104</ClassLevel>
+    <ClassLevelTable>106</ClassLevelTable>
+    <ClassExpTable>164</ClassExpTable>
+    <StatsTable>312</StatsTable>
+    <InspectedPlayer>1560</InspectedPlayer>
+  </PlayerOffsets>
+  <Signatures>
+    <Signature>
+      <Key>PlayerInfo</Key>
+      <Value>83f9ff7412448b048e8bd3488d0d</Value>
+      <Offset>14</Offset>
+    </Signature>
+    <Signature>
+      <Key>ObjectList</Key>
+      <Value>488b420848c1e8033da701000077248bc0488d0d</Value>
+      <Offset>20</Offset>
+    </Signature>
+    <Signature>
+      <Key>Inventory</Key>
+      <Value>8d81********85c075584c8b05</Value>
+      <Offset>13</Offset>
+    </Signature>
+    <Signature>
+      <Key>InventoryIds</Key>
+      <Value>8BD94D85C974**33C94C8D15</Value>
+      <Offset>12</Offset>
+    </Signature>
+    <Signature>
+      <Key>Targeting</Key>
+      <Value>488B05********4885C07507488B05********C3</Value>
+      <Offset>3</Offset>
+    </Signature>
+    <Signature>
+      <Key>Pet</Key>
+      <Value>3B15********74**8915</Value>
+      <Offset>2</Offset>
+    </Signature>
+    <Signature>
+      <Key>PetStats</Key>
+      <Value>488D0D********E8********83BD********00488BC3448825</Value>
+      <Offset>3</Offset>
+    </Signature>
+    <Signature>
+      <Key>PetInfo</Key>
+      <Value>488D0D********E8********83BD********00488BC3448825</Value>
+      <Offset>25</Offset>
+    </Signature>
+    <Signature>
+      <Key>AttackerList</Key>
+      <Value>418BDF391D********0F8E********488D3D</Value>
+      <Offset>18</Offset>
+    </Signature>
+    <Signature>
+      <Key>AttackerCount</Key>
+      <Value>418BDF391D********0F8E********488D3D</Value>
+      <Offset>5</Offset>
+    </Signature>
+    <Signature>
+      <Key>PartyList</Key>
+      <Value>488D7C242066660F1F840000000000488B17488D0D</Value>
+      <Offset>21</Offset>
+      <PointerPath>
+        <int>752</int>
+      </PointerPath>
+    </Signature>
+    <Signature>
+      <Key>PartyCount</Key>
+      <Value>488D7C242066660F1F840000000000488B17488D0D</Value>
+      <Offset>21</Offset>
+      <PointerPath>
+        <int>25564</int>
+      </PointerPath>
+    </Signature>
+    <Signature>
+      <Key>MapInfo</Key>
+      <Value>8B15********33C085D274**4C8D05</Value>
+      <Offset>2</Offset>
+      <PointerPath>
+        <int>44</int>
+      </PointerPath>
+    </Signature>
+    <Signature>
+      <Key>SanctuaryFlag</Key>
+      <Value>0FB615********33C084C90F45C2C3</Value>
+      <Offset>3</Offset>
+    </Signature>
+  </Signatures>
+</FfxivOffsets>

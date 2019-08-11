@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FCEA67E9-3E2B-49D5-876D-37DAD6CE6FB3}</ProjectGuid>
+    <ProjectGuid>{F425B11E-8679-44F1-9950-448FE174ACBA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MemLib.Ffxiv</RootNamespace>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,8 +33,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -53,55 +56,36 @@
     <Compile Include="Enumerations\PlayerIcon.cs" />
     <Compile Include="Enumerations\StatusFlags.cs" />
     <Compile Include="Enumerations\World.cs" />
-    <Compile Include="FfxivProcess.cs" />
+    <Compile Include="Ffxiv.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Managers\GameObjectManager.cs" />
+    <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="Managers\PartyManager.cs" />
     <Compile Include="Managers\PetManager.cs" />
     <Compile Include="Managers\WorldManager.cs" />
     <Compile Include="Objects\Aura.cs" />
     <Compile Include="Objects\Auras.cs" />
-    <Compile Include="Objects\PartyMember.cs" />
-    <Compile Include="Objects\SpellCastInfo.cs" />
-    <Compile Include="Managers\GameObjectManager.cs" />
-    <Compile Include="Managers\InventoryManager.cs" />
-    <Compile Include="Objects\Aetheryte.cs" />
     <Compile Include="Objects\Bag.cs" />
     <Compile Include="Objects\BagSlot.cs" />
     <Compile Include="Objects\BattleCharacter.cs" />
     <Compile Include="Objects\Character.cs" />
-    <Compile Include="Objects\EventObject.cs" />
     <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="Objects\GatheringPointObject.cs" />
-    <Compile Include="Objects\HousingObject.cs" />
     <Compile Include="Objects\LocalPlayer.cs" />
-    <Compile Include="Objects\Minion.cs" />
+    <Compile Include="Objects\PartyMember.cs" />
+    <Compile Include="Objects\PlayerStats.cs" />
     <Compile Include="Objects\RemoteObject.cs" />
-    <Compile Include="Offsets\Structs\GuiOffsets.cs" />
-    <Compile Include="Offsets\Structs\MapOffsets.cs" />
-    <Compile Include="Offsets\Structs\PartyOffsets.cs" />
-    <Compile Include="Offsets\Structs\TargetOffsets.cs" />
-    <Compile Include="Structures\AuraData.cs" />
-    <Compile Include="Structures\Stats.cs" />
-    <Compile Include="Objects\Treasure.cs" />
-    <Compile Include="Offsets\OffsetManager.cs" />
+    <Compile Include="Objects\AuraData.cs" />
+    <Compile Include="Objects\SpellCastInfo.cs" />
+    <Compile Include="Offsets\FfxivOffsets.cs" />
+    <Compile Include="Offsets\OffsetStructs\CharacterOffsets.cs" />
+    <Compile Include="Offsets\OffsetStructs\GuiOffsets.cs" />
+    <Compile Include="Offsets\OffsetStructs\ItemOffsets.cs" />
+    <Compile Include="Offsets\OffsetStructs\MapOffsets.cs" />
+    <Compile Include="Offsets\OffsetStructs\PartyOffsets.cs" />
+    <Compile Include="Offsets\OffsetStructs\PlayerInfoOffsets.cs" />
+    <Compile Include="Offsets\OffsetStructs\TargetOffsets.cs" />
     <Compile Include="Offsets\Signature.cs" />
-    <Compile Include="Offsets\Structs\CharacterOffsets.cs" />
-    <Compile Include="Offsets\Structs\ItemOffsets.cs" />
-    <Compile Include="Offsets\Structs\PlayerInfoOffsets.cs" />
-    <Compile Include="Offsets\Offsets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Structures\Vector3.cs" />
-    <Compile Include="XivApi\JsonParser.cs" />
-    <Compile Include="XivApi\Models\BaseRequest.cs" />
-    <Compile Include="XivApi\Models\Character\AchievementResult.cs" />
-    <Compile Include="XivApi\Models\Character\CharacterRequest.cs" />
-    <Compile Include="XivApi\Models\Character\CharacterResult.cs" />
-    <Compile Include="XivApi\Models\Character\CharacterSearchResult.cs" />
-    <Compile Include="XivApi\Models\Character\ClassJobResult.cs" />
-    <Compile Include="XivApi\Models\Item\ItemResult.cs" />
-    <Compile Include="XivApi\Models\Item\ItemSearchResult.cs" />
-    <Compile Include="XivApi\Models\Search\PaginationResult.cs" />
-    <Compile Include="XivApi\Models\Search\SearchResult.cs" />
-    <Compile Include="XivApi\XivApiClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MemLib\MemLib.csproj">
@@ -110,9 +94,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="signatures.xml" />
     <Content Include="offsets.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

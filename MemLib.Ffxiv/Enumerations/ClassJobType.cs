@@ -1,5 +1,5 @@
 ﻿namespace MemLib.Ffxiv.Enumerations {
-    public enum ClassJobType : uint {
+    public enum ClassJobType : byte {
         Adventurer = 0,
         Gladiator = 1,
         Pugilist = 2,

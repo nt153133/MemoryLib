@@ -2,12 +2,12 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace MemLib.Ffxiv.Structures {
+namespace MemLib.Ffxiv.Objects { 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct Stats {
+    public struct PlayerStats {
         public override string ToString() {
             var stringBuilder = new StringBuilder();
-            foreach (var fieldInfo in typeof(Stats).GetFields(BindingFlags.Instance | BindingFlags.Public))
+            foreach (var fieldInfo in typeof(PlayerStats).GetFields(BindingFlags.Instance | BindingFlags.Public))
                 stringBuilder.AppendFormat("{0}:{1}\n", fieldInfo.Name.PadRight(25, ' '), fieldInfo.GetValue(this));
             return stringBuilder.ToString();
         }

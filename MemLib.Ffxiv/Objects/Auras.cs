@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MemLib.Ffxiv.Structures;
 
 namespace MemLib.Ffxiv.Objects {
     public class Auras : RemoteObject, IEnumerable<Aura> {
@@ -10,16 +9,16 @@ namespace MemLib.Ffxiv.Objects {
         public List<Aura> AuraList {
             get {
                 m_AuraList.Clear();
-                var list = m_Process.Read<AuraData>(BaseAddress, 30);
+                var list = Ffxiv.Memory.Read<AuraData>(BaseAddress, 30);
                 for (var i = 0; i < 30; i++) {
                     if(list[i].AuraId > 0)
-                        m_AuraList.Add(new Aura(m_Process, list[i], i));
+                        m_AuraList.Add(new Aura(list[i], i));
                 }
                 return m_AuraList;
             }
         }
 
-        internal Auras(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
+        internal Auras(IntPtr baseAddress) : base(baseAddress) { }
 
         public int GetAuraStacksById(uint id) {
             var aura = AuraList.FirstOrDefault(a => a.Id == id);

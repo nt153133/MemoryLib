@@ -3,17 +3,17 @@ using MemLib.Ffxiv.Enumerations;
 
 namespace MemLib.Ffxiv.Objects {
     public class BagSlot : RemoteObject {
-        public InventoryBagId BagId => m_Process.Read<InventoryBagId>(BaseAddress);
-        public uint RawItemId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Item.RawItemId);
-        public uint Count => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Item.Count);
-        public ushort Slot => m_Process.Read<ushort>(BaseAddress + m_Process.Offsets.Item.Slot);
-        public float Condition => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Item.Condition);
-        public float SpiritBond => m_Process.Read<float>(BaseAddress + m_Process.Offsets.Item.SpiritBond);
-        public byte HqFlag => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.HqFlag);
-        public MateriaType[] MateriaTypes => m_Process.Read<MateriaType>(BaseAddress + m_Process.Offsets.Item.MateriaIds, 5);
-        public byte[] MateriaRank => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.MateriaRanks, 5);
-        public byte DyeId => m_Process.Read<byte>(BaseAddress + m_Process.Offsets.Item.DyeId);
-        public uint GlamourId => m_Process.Read<uint>(BaseAddress + m_Process.Offsets.Item.GlamourId);
+        public InventoryBagId BagId => Ffxiv.Memory.Read<InventoryBagId>(BaseAddress);
+        public uint RawItemId => Ffxiv.Memory.Read<uint>(BaseAddress + Ffxiv.Offsets.ItemOffsets.RawItemId);
+        public uint Count => Ffxiv.Memory.Read<uint>(BaseAddress + Ffxiv.Offsets.ItemOffsets.Count);
+        public ushort Slot => Ffxiv.Memory.Read<ushort>(BaseAddress + Ffxiv.Offsets.ItemOffsets.Slot);
+        public float Condition => Ffxiv.Memory.Read<float>(BaseAddress + Ffxiv.Offsets.ItemOffsets.Condition);
+        public float SpiritBond => Ffxiv.Memory.Read<float>(BaseAddress + Ffxiv.Offsets.ItemOffsets.SpiritBond);
+        public byte HqFlag => Ffxiv.Memory.Read<byte>(BaseAddress + Ffxiv.Offsets.ItemOffsets.HqFlag);
+        public MateriaType[] MateriaTypes => Ffxiv.Memory.Read<MateriaType>(BaseAddress + Ffxiv.Offsets.ItemOffsets.MateriaIds, 5);
+        public byte[] MateriaRanks => Ffxiv.Memory.Read<byte>(BaseAddress + Ffxiv.Offsets.ItemOffsets.MateriaRanks, 5);
+        public byte DyeId => Ffxiv.Memory.Read<byte>(BaseAddress + Ffxiv.Offsets.ItemOffsets.DyeId);
+        public uint GlamourId => Ffxiv.Memory.Read<uint>(BaseAddress + Ffxiv.Offsets.ItemOffsets.GlamourId);
 
         internal bool Valid = true;
         public override bool IsValid => Valid;
@@ -21,7 +21,7 @@ namespace MemLib.Ffxiv.Objects {
         public bool IsCollectable => (HqFlag & 8) > 0;
         public bool IsFilled => RawItemId > 0u;
 
-        internal BagSlot(FfxivProcess process, IntPtr baseAddress) : base(process, baseAddress) { }
+        internal BagSlot(IntPtr baseAddress) : base(baseAddress) { }
 
         #region Overrides of RemoteObject
 

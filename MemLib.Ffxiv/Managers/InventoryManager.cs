@@ -7,8 +7,7 @@ using MemLib.Ffxiv.Objects;
 
 namespace MemLib.Ffxiv.Managers {
     public sealed class InventoryManager {
-        private readonly FfxivProcess m_Process;
-        private static IntPtr m_InventoryPtr = IntPtr.Zero;
+        private IntPtr m_InventoryPtr = IntPtr.Zero;
         private readonly ConcurrentDictionary<InventoryBagId, Bag> m_Bags = new ConcurrentDictionary<InventoryBagId, Bag>();
 
         public uint FreeSlots => (uint) GetBagsByInventoryId(InventoryIds).Sum(b => b.FreeSlots);
@@ -20,9 +19,7 @@ namespace MemLib.Ffxiv.Managers {
         
         public Bag this[InventoryBagId id] => GetBagByInventoryId(id);
         
-        internal InventoryManager(FfxivProcess process) {
-            m_Process = process;
-        }
+        internal InventoryManager() { }
 
         private IEnumerable<BagSlot> GetSlots(params InventoryBagId[] bagIds) {
             var list = new List<BagSlot>();
@@ -32,20 +29,22 @@ namespace MemLib.Ffxiv.Managers {
         }
 
         private void Update() {
-            var invPtr = m_Process.Read<IntPtr>(m_Process.Offsets.InventoryPtr);
-            if (invPtr != m_InventoryPtr) {
-                foreach (var bag in m_Bags.Values) {
-                    bag.Invalidate();
-                }
-                m_InventoryPtr = invPtr;
+            if (Ffxiv.Memory == null) return;
+            var invPtr = Ffxiv.Memory.Read<IntPtr>(Ffxiv.Offsets.Inventory);
+            if (invPtr == m_InventoryPtr) return;
+            foreach (var bag in m_Bags.Values) {
+                bag.Invalidate();
             }
-            var idArray = m_Process.Read<uint>(m_Process.Offsets.InventoryIdsPtr, 74);
+
+            var idArray = Ffxiv.Memory.Read<uint>(Ffxiv.Offsets.InventoryIds, 74);
             for (var i = 0; i < idArray.Length; i++) {
-                if(!Enum.IsDefined(typeof(InventoryBagId), idArray[i])) continue;
-                if (m_Process.Read<IntPtr>(invPtr + i * 24, out var ptr) && ptr != IntPtr.Zero)
-                    m_Bags[(InventoryBagId) idArray[i]] = new Bag(m_Process, invPtr + i * 24);
-                else m_Bags.TryRemove((InventoryBagId) idArray[i], out _);
+                if (!Enum.IsDefined(typeof(InventoryBagId), idArray[i])) continue;
+                if (Ffxiv.Memory.Read<IntPtr>(invPtr + i * 24, out var ptr) && ptr != IntPtr.Zero)
+                    m_Bags[(InventoryBagId)idArray[i]] = new Bag(invPtr + i * 24);
+                else m_Bags.TryRemove((InventoryBagId)idArray[i], out _);
             }
+
+            m_InventoryPtr = invPtr;
         }
 
         public Bag GetBagByInventoryId(InventoryBagId id) {

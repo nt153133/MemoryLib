@@ -43,6 +43,7 @@ namespace MemLib {
 
         public RemoteProcess(Process process) {
             Native = process ?? throw new ArgumentNullException(nameof(process));
+            Native.EnableRaisingEvents = true;
             Handle = NativeMethods.OpenProcess(ProcessAccessFlags.AllAccess, false, process.Id);
             Pattern = new PatternFinder(this);
         }
