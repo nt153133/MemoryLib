@@ -59,7 +59,6 @@ namespace MemLib.Ffxiv.Managers {
                 gameObject.UpdatePointer(IntPtr.Zero);
             }
 
-            Attackers = new HashSet<BattleCharacter>();
             var attackerIds = new HashSet<uint>();
             if (Ffxiv.Memory.Read<int>(Ffxiv.Offsets.AttackerCount, out var attackersCount) && attackersCount > 0) {
                 for (var i = 0; i < attackersCount; i++) {
@@ -69,6 +68,7 @@ namespace MemLib.Ffxiv.Managers {
                 }
             }
 
+            Attackers = new HashSet<BattleCharacter>();
             foreach (var entity in GetRawEntities()) {
                 if (entity == null || entity.BaseAddress == IntPtr.Zero) continue;
                 var objId = entity.ObjectId;

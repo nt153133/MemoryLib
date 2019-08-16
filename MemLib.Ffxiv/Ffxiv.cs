@@ -19,7 +19,7 @@ namespace MemLib.Ffxiv {
                 if (process == null) return null;
                 m_Memory = new RemoteProcess(process);
                 m_Memory.Native.Exited += NativeOnExited;
-                if(Offsets == null)
+                if (Offsets == null)
                     LoadOffsets();
                 return m_Memory;
             }
@@ -48,7 +48,7 @@ namespace MemLib.Ffxiv {
             LoadOffsets();
         }
 
-        public static void NativeOnExited(object sender, EventArgs e) {
+        private static void NativeOnExited(object sender, EventArgs e) {
             m_Memory?.Dispose();
             m_Memory = null;
             Offsets = null;

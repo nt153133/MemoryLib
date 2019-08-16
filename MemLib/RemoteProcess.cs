@@ -14,7 +14,9 @@ using MemLib.Threading;
 namespace MemLib {
     public class RemoteProcess : IDisposable, IEquatable<RemoteProcess> {
         private bool? m_Is64Bit;
-        
+
+        public event EventHandler Exited;
+
         public Process Native { get; }
         public SafeMemoryHandle Handle { get; }
         public int Id => Native.Id;
@@ -44,8 +46,15 @@ namespace MemLib {
         public RemoteProcess(Process process) {
             Native = process ?? throw new ArgumentNullException(nameof(process));
             Native.EnableRaisingEvents = true;
+            Native.Exited += NativeOnExited;
             Handle = NativeMethods.OpenProcess(ProcessAccessFlags.AllAccess, false, process.Id);
             Pattern = new PatternFinder(this);
+        }
+
+        private void NativeOnExited(object sender, EventArgs e) {
+            lock (this) {
+                Exited?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         #region Statics
@@ -206,7 +215,10 @@ namespace MemLib {
         #region IDisposable
 
         public virtual void Dispose() {
+            Exited = null;
             ((IDisposable)m_Memory)?.Dispose();
+            ((IDisposable)m_Modules)?.Dispose();
+            ((IDisposable)m_Threads)?.Dispose();
             Native?.Dispose();
             if(!Handle.IsClosed)
                 Handle.Close();
